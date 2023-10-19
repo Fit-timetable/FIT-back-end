@@ -1,14 +1,14 @@
 package ru.nsu.fit.parse;
 
 import lombok.*;
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 public class Subject {
-    private List<String> title;
-    private List<String> tutorName;
-    private List<String> room;
-    private List<String> type;
+    private String title;
+    private String tutorName;
+    private String room;
+    private String type;
+    private String week;
 }
