@@ -6,14 +6,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.util.*;
 
-public class WebParser {
-    private final List<Subject>[][] subjects = new ArrayList[DAYS_IN_WEEK][LESSONS_IN_DAY];
+public class ScheduleParser {
+    private final List<Lesson>[][] subjects = new ArrayList[DAYS_IN_WEEK][LESSONS_IN_DAY];
 
     private static final int DAYS_IN_WEEK = 6;
     private static final int LESSONS_IN_DAY = 7;
     private static final int GROUP_NUMBER = 20209;
 
-    public WebParser() {
+    public ScheduleParser() {
         parse();
     }
 
@@ -27,7 +27,7 @@ public class WebParser {
 
     private void parse() {
         try {
-            Document document = Jsoup.connect("https://table.nsu.ru/group/" + GROUP_NUMBER).get();
+            Document document = Jsoup.connect(ScheduleUrl.GROUP_URL + GROUP_NUMBER).get();
 
             Elements scheduleElements = document.select("table.time-table");
             int j;
@@ -50,7 +50,7 @@ public class WebParser {
                                 String type = getElementText(currentCell.select(".type"), k);
                                 String week = getElementText(currentCell.select(".week"), k);
 
-                                subjects[i][j].add(new Subject(subject, tutor, room, type, week));
+                                subjects[i][j].add(new Lesson(subject, tutor, room, type, week));
                             }
                             j++;
                         }
@@ -73,11 +73,11 @@ public class WebParser {
                     if (k > 0) {
                         System.out.print(" / ");
                     }
-                    System.out.print(subjects[i][j].get(k).getTitle() + " " +
-                                    subjects[i][j].get(k).getType() + " " +
-                                    subjects[i][j].get(k).getTutorName() + " " +
-                                    subjects[i][j].get(k).getRoom() + " " +
-                                    subjects[i][j].get(k).getWeek());
+                    System.out.print(subjects[i][j].get(k).subject() + " " +
+                                    subjects[i][j].get(k).type() + " " +
+                                    subjects[i][j].get(k).tutor() + " " +
+                                    subjects[i][j].get(k).room() + " " +
+                                    subjects[i][j].get(k).week());
                 }
                 System.out.print("\n");
             }
