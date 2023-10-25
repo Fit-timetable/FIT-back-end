@@ -1,9 +1,12 @@
-package ru.nsu.fit.parse;
+package ru.nsu.fit.parse.schedule.auditorium;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import ru.nsu.fit.parse.schedule.DayOfWeek;
+
 import java.util.*;
 
 public class ScheduleParser {
@@ -11,10 +14,17 @@ public class ScheduleParser {
 
     private static final int DAYS_IN_WEEK = 6;
     private static final int LESSONS_IN_DAY = 7;
-    private static final int GROUP_NUMBER = 20209;
+    private static int AUDITORIUM_NUMBER;
+
+    public void setAUDITORIUM_NUMBER(int AUDITORIUM_NUMBER){
+        this.AUDITORIUM_NUMBER = AUDITORIUM_NUMBER;
+    }
 
     public ScheduleParser() {
-        parse();
+    }
+
+    public ScheduleParser(int AUDITORIUM_NUMBER) {
+        setAUDITORIUM_NUMBER(AUDITORIUM_NUMBER);
     }
 
     private String checkNullable(Element element) {
@@ -25,9 +35,9 @@ public class ScheduleParser {
         return checkNullable(elements.size() > k ? elements.get(k) : null);
     }
 
-    private void parse() {
+    public void parse() {
         try {
-            Document document = Jsoup.connect(ScheduleUrl.GROUP_URL + GROUP_NUMBER).get();
+            Document document = Jsoup.connect(ScheduleUrl.AUDITORIUM_URL + AUDITORIUM_NUMBER).get();
 
             Elements scheduleElements = document.select("table.time-table");
             int j;
@@ -47,10 +57,15 @@ public class ScheduleParser {
                                 String subject = getElementText(currentCell.select(".subject"), k);
                                 String tutor = getElementText(currentCell.select(".tutor"), k);
                                 String room = getElementText(currentCell.select(".room"), k);
-                                String type = getElementText(currentCell.select(".type"), k);
                                 String week = getElementText(currentCell.select(".week"), k);
 
-                                lessons[i][j].add(new Lesson(subject, tutor, room, type, week));
+                                String group = ""; 
+                                for (int g = 0; g < currentCell.select(".group").size(); g++) {
+                                     group = group + " " + getElementText(currentCell.select(".group"), g);
+                                     
+                                }
+
+                                lessons[i][j].add(new Lesson(subject, tutor, room, group, week));
                             }
                             j++;
                         }
@@ -67,6 +82,7 @@ public class ScheduleParser {
     private void printTimetable() {
         System.out.println("/******************************************/");
         for (int i = 0; i < DAYS_IN_WEEK; i++) {
+            System.out.println(DayOfWeek.fromNumber(i + 1).getName());
             for (int j = 0; j < LESSONS_IN_DAY; j++) {
                 System.out.print(j + 1 + ". ");
                 for (int k = 0; k < lessons[i][j].size(); k++) {
@@ -77,12 +93,13 @@ public class ScheduleParser {
                             lessons[i][j].get(k).subject() + " " +
                             lessons[i][j].get(k).type() + " " +
                             lessons[i][j].get(k).tutor() + " " +
-                            lessons[i][j].get(k).room() + " " +
+                            lessons[i][j].get(k).group() + " " +
                             lessons[i][j].get(k).week());
                 }
                 System.out.print("\n");
             }
-            System.out.println("/******************************************/");
+            System.out.print("\n");
         }
+        System.out.println("/******************************************/");
     }
 }
