@@ -16,7 +16,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.jsoup:jsoup:1.15.3'
     testImplementation("org.springframework.boot:spring-boot-starter-test");
-
+    implementation 'org.flywaydb:flyway-core:9.22.3'
 }
 
 tasks.named('test') {
