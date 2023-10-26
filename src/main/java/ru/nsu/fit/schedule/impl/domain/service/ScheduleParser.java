@@ -1,9 +1,12 @@
-package ru.nsu.fit.parse;
+package ru.nsu.fit.schedule.impl.domain.service;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import ru.nsu.fit.schedule.impl.domain.model.Lesson;
+import ru.nsu.fit.schedule.port.ScheduleUrl;
+
 import java.util.*;
 
 public class ScheduleParser {
