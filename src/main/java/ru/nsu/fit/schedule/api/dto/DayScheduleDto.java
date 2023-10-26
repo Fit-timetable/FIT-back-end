@@ -1,4 +1,4 @@
-package ru.nsu.fit.schedule.api;
+package ru.nsu.fit.schedule.api.dto;
 
 import java.util.List;
 
