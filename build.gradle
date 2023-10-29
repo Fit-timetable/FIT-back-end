@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '3.1.4'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'java'
+    id 'org.flywaydb.flyway' version '9.19.0'
 }
 
 group = 'ru.nsu.fit'
@@ -12,11 +13,17 @@ repositories {
     mavenCentral()
 }
 
+flyway {
+    url = 'jdbc:postgresql://localhost:5432/ftt'
+    user = 'ftt_admin'
+    password = 'ftt'
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.jsoup:jsoup:1.15.3'
-    testImplementation("org.springframework.boot:spring-boot-starter-test");
-    implementation 'org.flywaydb:flyway-core:9.22.3'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.named('test') {
