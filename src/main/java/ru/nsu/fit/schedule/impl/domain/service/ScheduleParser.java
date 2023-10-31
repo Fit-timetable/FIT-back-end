@@ -50,20 +50,44 @@ public class ScheduleParser {
             throw new IllegalArgumentException("Student not found");
         }
 
-        GlobalModeratorEntity globalModeratorEntity = globalModeratorRepository
-                .findGlobalModeratorByGlobalModeratorEntityKey_StudentEntityId(studentId);
+        if (groupStudentRepository.findByGroupEntityAndStudentEntity(groupEntity, studentEntity) == null) {
+            GlobalModeratorEntity globalModeratorEntity = globalModeratorRepository
+                    .findGlobalModeratorByGlobalModeratorEntityKey_StudentEntityId(studentId);
 
-        GroupStudentEntity groupStudentEntity = new GroupStudentEntity();
-        groupStudentEntity.setGroupEntity(groupEntity);
-        groupStudentEntity.setStudentEntity(studentEntity);
-        groupStudentEntity.setModerator(globalModeratorEntity != null);
+            GroupStudentEntity groupStudentEntity = new GroupStudentEntity();
+            groupStudentEntity.setGroupEntity(groupEntity);
+            groupStudentEntity.setStudentEntity(studentEntity);
+            groupStudentEntity.setModerator(globalModeratorEntity != null);
 
-        groupStudentRepository.save(groupStudentEntity);
+            groupStudentRepository.save(groupStudentEntity);
+        }
+
+        List<LessonEntity> lessonEntities = lessonRepository.findByGroupEntity_Id(groupEntity.getId());
+
+        for (LessonEntity lessonEntity : lessonEntities) {
+            if (studentLessonRepository
+                    .findByStudentEntityAndLessonEntity(studentEntity, lessonEntity) == null) {
+                StudentLessonEntity studentLessonEntity = new StudentLessonEntity();
+                studentLessonEntity.setStudentEntity(studentEntity);
+                studentLessonEntity.setLessonEntity(lessonEntity);
+                studentLessonEntity.setVisited(true);
+
+                studentLessonRepository.save(studentLessonEntity);
+            }
+        }
     }
 
     public void resetSchedule(Long studentId) {
         List<StudentLessonEntity> studentLessonEntities = studentLessonRepository.findByStudentEntity_Id(studentId);
         studentLessonRepository.deleteAll(studentLessonEntities);
+
+        StudentEntity studentEntity = studentRepository.findById(studentId).orElse(null);
+        if (studentEntity == null) {
+            throw new IllegalArgumentException("Student not found");
+        }
+
+        GroupStudentEntity groupStudentEntity = groupStudentRepository.findByStudentEntity(studentEntity);
+        groupStudentRepository.delete(groupStudentEntity);
     }
 
     private void parse() {

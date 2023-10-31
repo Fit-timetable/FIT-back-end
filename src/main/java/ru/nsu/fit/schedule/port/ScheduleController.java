@@ -9,6 +9,7 @@ import ru.nsu.fit.schedule.api.ScheduleService;
 @RequestMapping("/schedule")
 public class ScheduleController {
     private final ScheduleService scheduleService;
+
     @PostMapping("/reset/{studentId}")
     public void resetSchedule(@PathVariable("studentId") long studentId) {
         scheduleService.resetSchedule(studentId);
