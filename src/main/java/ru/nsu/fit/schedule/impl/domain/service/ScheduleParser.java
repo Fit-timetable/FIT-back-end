@@ -1,10 +1,9 @@
 package ru.nsu.fit.schedule.impl.domain.service;
 
-import lombok.Getter;
+import lombok.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.nsu.fit.schedule.impl.data.entities.*;
 import ru.nsu.fit.schedule.impl.data.repositories.*;
@@ -15,26 +14,22 @@ import java.util.*;
 
 @Component
 @Getter
+@AllArgsConstructor
 public class ScheduleParser {
     private final List<Lesson>[][] lessons = new ArrayList[DAYS_IN_WEEK][LESSONS_IN_DAY];
 
-    @Autowired
     private GroupRepository groupRepository;
-    @Autowired
     private StudentRepository studentRepository;
-    @Autowired
     private GroupStudentRepository groupStudentRepository;
+    private GlobalModeratorRepository globalModeratorRepository;
+    private SubjectRepository subjectRepository;
+    private StudentLessonRepository studentLessonRepository;
+    private LessonRepository lessonRepository;
 
     private static final int DAYS_IN_WEEK = 6;
     private static final int LESSONS_IN_DAY = 7;
     private static final int GROUP_NUMBER = 20209;
 
-    public ScheduleParser(GroupRepository groupRepository, StudentRepository studentRepository, GroupStudentRepository groupStudentRepository) {
-        this.groupRepository = groupRepository;
-        this.studentRepository = studentRepository;
-        this.groupStudentRepository = groupStudentRepository;
-        parse();
-    }
 
     private String checkNullable(Element element) {
         return (element != null) ? element.text() : "";
@@ -45,26 +40,30 @@ public class ScheduleParser {
     }
 
     public void pinSchedule(Long studentId, String group) {
-        Group groupEntity = groupRepository.findByNumber(group);
+        GroupEntity groupEntity = groupRepository.findByNumber(group);
         if (groupEntity == null) {
             throw new IllegalArgumentException("Group not found");
         }
 
-        Student studentEntity = studentRepository.findById(studentId).orElse(null);
+        StudentEntity studentEntity = studentRepository.findById(studentId).orElse(null);
         if (studentEntity == null) {
             throw new IllegalArgumentException("Student not found");
         }
 
-        GroupStudent groupStudentEntity = new GroupStudent();
-        groupStudentEntity.setGroup(groupEntity);
-        groupStudentEntity.setStudent(studentEntity);
-        groupStudentEntity.setModerator(false);
+        GlobalModeratorEntity globalModeratorEntity = globalModeratorRepository
+                .findGlobalModeratorByGlobalModeratorEntityKey_StudentEntityId(studentId);
+
+        GroupStudentEntity groupStudentEntity = new GroupStudentEntity();
+        groupStudentEntity.setGroupEntity(groupEntity);
+        groupStudentEntity.setStudentEntity(studentEntity);
+        groupStudentEntity.setModerator(globalModeratorEntity != null);
 
         groupStudentRepository.save(groupStudentEntity);
     }
 
     public void resetSchedule(Long studentId) {
-
+        List<StudentLessonEntity> studentLessonEntities = studentLessonRepository.findByStudentEntity_Id(studentId);
+        studentLessonRepository.deleteAll(studentLessonEntities);
     }
 
     private void parse() {

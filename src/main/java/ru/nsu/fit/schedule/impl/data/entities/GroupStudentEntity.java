@@ -8,16 +8,16 @@ import jakarta.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupStudent {
+public class GroupStudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    private StudentEntity studentEntity;
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false)
-    private Group group;
+    private GroupEntity groupEntity;
     @Column(nullable = false)
     private boolean isModerator;
 }
