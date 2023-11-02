@@ -4,19 +4,21 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.nsu.fit.schedule.api.ScheduleService;
 
+import static ru.nsu.fit.schedule.port.ScheduleUrl.*;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("/schedule")
+@RequestMapping(SCHEDULE_URL)
 public class ScheduleController {
     private final ScheduleService scheduleService;
 
-    @PostMapping("/reset/{studentId}")
-    public void resetSchedule(@PathVariable("studentId") long studentId) {
+    @PostMapping(RESET_URL)
+    public void resetSchedule(@RequestParam("student_id") Long studentId) {
         scheduleService.resetSchedule(studentId);
     }
 
-    @PostMapping("/pin/{studentId}/{group}")
-    public void pinSchedule(@PathVariable("studentId") long studentId, @PathVariable("group") String group) {
+    @PostMapping(PIN_URL)
+    public void pinSchedule(@RequestParam("student_id") Long studentId, @RequestParam("group") String group) {
         scheduleService.pinSchedule(studentId, group);
     }
 }
