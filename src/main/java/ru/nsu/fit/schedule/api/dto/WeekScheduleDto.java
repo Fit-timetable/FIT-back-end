@@ -2,9 +2,9 @@ package ru.nsu.fit.schedule.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "Расписание группы на неделю")
+@Schema(name = "Расписание группы на неделю")
 public record WeekScheduleDto(
-    @Schema(description = "Список занятий на понидельник")
+    @Schema(description = "Список занятий на понедельник")
     DayScheduleDto monday,
     @Schema(description = "Список занятий на вторник")
     DayScheduleDto tuesday,
