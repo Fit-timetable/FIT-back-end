@@ -1,21 +1,20 @@
 package ru.nsu.fit.schedule.api.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@ApiModel(description = "The DTO represents all lessons for the day in the current group")
+@Schema(description = "Расписание группы на неделю")
 public record WeekScheduleDto(
-    @ApiModelProperty(notes = "List of lessons for monday")
+    @Schema(description = "Список занятий на понидельник")
     DayScheduleDto monday,
-    @ApiModelProperty(notes = "List of lessons in tuesday")
+    @Schema(description = "Список занятий на вторник")
     DayScheduleDto tuesday,
-    @ApiModelProperty(notes = "List of lessons in wednesday")
+    @Schema(description = "Список занятий на среду")
     DayScheduleDto wednesday,
-    @ApiModelProperty(notes = "List of lessons in thursday")
+    @Schema(description = "Список занятий на четверг")
     DayScheduleDto thursday,
-    @ApiModelProperty(notes = "List of lessons in friday")
+    @Schema(description = "Список занятий на пятницу")
     DayScheduleDto friday,
-    @ApiModelProperty(notes = "List of lessons in saturday")
+    @Schema(description = "Список занятий на субботу")
     DayScheduleDto saturday
 ) {
 }

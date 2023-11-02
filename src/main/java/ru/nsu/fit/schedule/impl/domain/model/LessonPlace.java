@@ -1,13 +1,10 @@
 package ru.nsu.fit.schedule.impl.domain.model;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@ApiModel(description = "Descriptions of the lesson location")
+@Schema(description = "Описание и формат занятия")
 public record LessonPlace(
-        @ApiModelProperty(notes = "Study room number")
-        String room,
-        @ApiModelProperty(notes = "Link for remote connection to the lesson")
-        String remoteLink
+        @Schema(description = "Номер аудитории") String room,
+        @Schema(description = "Ссылка для дистанционного подключения к занятию") String remoteLink
 ) {
 }

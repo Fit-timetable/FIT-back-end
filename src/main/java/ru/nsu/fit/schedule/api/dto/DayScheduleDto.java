@@ -1,12 +1,10 @@
 package ru.nsu.fit.schedule.api.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-@ApiModel(description = "The DTO represents all lessons for the day in the current group")
+@Schema(description = "Информация о предметах за день")
 public record DayScheduleDto(
-    @ApiModelProperty(notes = "The list of lessons for the day")
-    List<LessonScheduleDto> lessons
+    @Schema(description = "Список предметов") List<LessonScheduleDto> lessons
 ) {
 }

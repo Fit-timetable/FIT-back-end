@@ -1,25 +1,22 @@
 package ru.nsu.fit.schedule.api.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import ru.nsu.fit.schedule.impl.domain.model.LessonParity;
 import ru.nsu.fit.schedule.impl.domain.model.LessonPlace;
 import ru.nsu.fit.schedule.impl.domain.model.LessonType;
 
 
-@ApiModel(description = "DTO representing information about lesson in timetable")
+@Schema(description = "Информация о занятии в расписании")
 public record LessonScheduleDto(
-    @ApiModelProperty(notes = "Subject of the lesson")
-    String subject,
-    @ApiModelProperty(notes = "Type of the lesson (Possible options: LECTURE, SEMINAR, LABORATORY)")
+    @Schema(description = "Предмет") String subject,
+    @Schema(description = "Тип занятия (Возможные варианты: Лекция, Семинар, Лабораторное занятие)")
     LessonType type,
-    @ApiModelProperty(notes = "Lesson start time in HH:MM")
-    String startTime,
-    @ApiModelProperty(notes = "Teacher leading the lesson in name and initials")
+    @Schema(description = "Время начала занятия в формате ЧЧ:ММ") String startTime,
+    @Schema(description = "Фамилия и инциалы преподавателя который ведет занятие")
     String teacher,
-    @ApiModelProperty(notes = "Classroom number and link for connection")
+    @Schema(description = "Номер аудитории и ссылка для дистанционного подключения")
     LessonPlace place,
-    @ApiModelProperty(notes = "Parity of the lesson(Possible options: ODD, EVEN, ALWAYS)")
+    @Schema(description = "Четность недель занятия(Возможные варианты: четное, нечетное, постоянное")
     LessonParity parity
 ) {
 }
