@@ -97,7 +97,7 @@ public class ScheduleParser {
                 }
 
                 days.add(new DayScheduleDto(lessons));
-                lessons = new ArrayList<>();
+                lessons.clear();
             }
 
         } catch (Exception e) {
