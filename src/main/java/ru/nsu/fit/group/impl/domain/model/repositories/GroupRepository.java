@@ -1,8 +1,8 @@
-package ru.nsu.fit.group.impl.domain.model.data.repositories;
+package ru.nsu.fit.group.impl.domain.model.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.nsu.fit.group.impl.domain.model.data.entities.Group;
+import ru.nsu.fit.group.impl.domain.model.entities.Group;
 
 import java.util.Optional;
 

@@ -3,6 +3,7 @@ package ru.nsu.fit.schedule.port;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.nsu.fit.schedule.api.ScheduleService;
+import ru.nsu.fit.schedule.api.dto.PinRequestDto;
 
 import static ru.nsu.fit.schedule.port.ScheduleUrl.*;
 
@@ -18,7 +19,7 @@ public class ScheduleController {
     }
 
     @PostMapping(PIN_URL)
-    public void pinSchedule(@RequestParam("student_id") Long studentId, @RequestParam("group") String group) {
-        scheduleService.pinSchedule(studentId, group);
+    public void pinSchedule(@RequestBody PinRequestDto pinRequestDto) {
+        scheduleService.pinSchedule(pinRequestDto.studentId(), pinRequestDto.group());
     }
 }

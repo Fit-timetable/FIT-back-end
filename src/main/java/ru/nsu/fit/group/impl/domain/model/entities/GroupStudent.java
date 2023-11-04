@@ -1,8 +1,8 @@
-package ru.nsu.fit.group.impl.domain.model.data.entities;
+package ru.nsu.fit.group.impl.domain.model.entities;
 
 import lombok.*;
 import jakarta.persistence.*;
-import ru.nsu.fit.student.impl.domain.model.data.entities.Student;
+import ru.nsu.fit.student.impl.domain.model.entities.Student;
 
 @Entity
 @Table(name = "group_student", uniqueConstraints = {@UniqueConstraint(columnNames = {"student_id", "group_id"})})

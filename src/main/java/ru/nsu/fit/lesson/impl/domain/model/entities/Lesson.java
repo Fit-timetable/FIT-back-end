@@ -1,12 +1,12 @@
-package ru.nsu.fit.lesson.impl.domain.model.data.entities;
+package ru.nsu.fit.lesson.impl.domain.model.entities;
 
 import lombok.*;
 import jakarta.persistence.*;
-import ru.nsu.fit.group.impl.domain.model.data.entities.Group;
+import ru.nsu.fit.group.impl.domain.model.entities.Group;
 import ru.nsu.fit.schedule.impl.domain.model.DayName;
 import ru.nsu.fit.lesson.impl.domain.model.LessonParity;
 import ru.nsu.fit.lesson.impl.domain.model.LessonType;
-import ru.nsu.fit.schedule.impl.domain.model.data.entities.Subject;
+import ru.nsu.fit.schedule.impl.domain.model.entities.Subject;
 
 import java.time.ZonedDateTime;
 

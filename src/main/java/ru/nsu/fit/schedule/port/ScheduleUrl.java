@@ -5,5 +5,4 @@ public interface ScheduleUrl {
     String SCHEDULE_URL = "/schedule";
     String RESET_URL = "/reset";
     String PIN_URL = "/pin";
-
 }

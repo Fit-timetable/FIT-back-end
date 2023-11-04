@@ -1,9 +1,8 @@
-package ru.nsu.fit.student.impl.domain.model.data.entities;
+package ru.nsu.fit.student.impl.domain.model.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.nsu.fit.lesson.impl.domain.model.data.entities.Lesson;
-import ru.nsu.fit.student.impl.domain.model.data.entities.Student;
+import ru.nsu.fit.lesson.impl.domain.model.entities.Lesson;
 
 @Data
 @AllArgsConstructor
