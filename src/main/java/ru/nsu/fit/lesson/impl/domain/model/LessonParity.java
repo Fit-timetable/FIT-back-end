@@ -1,7 +1,7 @@
 package ru.nsu.fit.lesson.impl.domain.model;
 
 public enum LessonParity {
-    even,
-    odd,
-    always
+    EVEN,
+    ODD,
+    ALWAYS
 }
