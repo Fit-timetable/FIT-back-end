@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: FIT-Timetable API
-  version: 0.0.3
+  version: 0.0.4
 paths:
   /schedule/group/{group}:
     get:
@@ -113,10 +113,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/RoomList'
   /schedule/pin:
+    get:
+      tags:
+        - schedule
+      summary: Получить закрепленное за студентом расписание
+      parameters:
+        - name: student_id
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Расписание
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeekSchedule"
     post:
       tags:
         - schedule
-      summary: Закрепить расписание группы за пользователем
+      summary: Закрепить расписание группы за студентом
       requestBody:
         required: true
         content:
@@ -132,7 +149,7 @@ paths:
                   example: '20201'
       responses:
         '200':
-          description: Группа успешно закреплена за пользователем
+          description: Группа успешно закреплена за студентом
   /schedule/reset:
     post:
       summary: Cбросить все изменения и загрузить расписание с официального сайта 
@@ -162,7 +179,15 @@ paths:
               $ref: '#/components/schemas/LessonForm'
       responses:
         '200':
-          description: ''  
+          description: 'Id созданного занятия'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
   /lesson/{id}:
     parameters:
         - name: id
@@ -217,7 +242,7 @@ paths:
           description: '' 
   /lesson/{id}/cancel:
     post:
-      summary: Удалить занятие на определенную дату
+      summary: Отменить занятие на определенную дату
       tags:
         - lesson 
       parameters:
@@ -298,7 +323,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/HomeworkForm'
+                  $ref: '#/components/schemas/HomeworkResponse'
 
     post:
       summary: Добавить домашнее задание
@@ -339,7 +364,7 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/HomeworkForm'
+                $ref: '#/components/schemas/HomeworkResponse'
     put:
       summary: Редактировать домашнее задание
       tags:
@@ -505,6 +530,11 @@ paths:
       responses:
         '200':
           description: Список модераторов группы и общих модераторов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModeratorList'
+
   /global-moderator/{id}:
     post:
       summary: Открыть доступ к личному кабинету модератора
@@ -600,7 +630,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Resource'
+                  $ref: '#/components/schemas/ResourceResponse'
     post:
       tags:
         - resource
@@ -656,13 +686,13 @@ paths:
       summary: Получить ресурсы потока
       responses:
         '200':
-          description: Список ресурсов группы
+          description: Список ресурсов потока
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Resource'
+                  $ref: '#/components/schemas/ResourceResponse'
     post:
       tags:
         - resource
@@ -696,7 +726,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Resource'
+                  $ref: '#/components/schemas/ResourceResponse'
   /resource/pending/{id}/accept:
     parameters:
       - name: id
@@ -735,12 +765,59 @@ paths:
       responses:
         '200':
           description: ''
+  /subject:
+    parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          example: 'операцион'
+    get:
+      tags:
+        - subjects
+      summary: Получить список предметов согласно фильтру
+      responses:
+        '200':
+          description: 'Список предметов'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubjectList'
                   
 components:
   schemas:
     HomeworkForm:
       type: object
       properties:
+        subjectId:
+          type: integer
+          example: 1
+        dueDate:
+          type: string
+          format: date
+        text:
+          type: string
+          description: Текст задания
+        estimatedTime:
+          type: integer
+          example: 3600
+        file:
+          type: string
+          format: byte
+        isGroupShared:
+          type: boolean
+        notificationsPeriod:
+          type: integer
+          example: 86400
+        notificationDaysBeforeDeadline:
+          type: integer
+          example: 3
+    HomeworkResponse:
+      type: object
+      properties:
+        id:
+          type: integer
         subjectId:
           type: integer
           example: 1
@@ -798,6 +875,9 @@ components:
     Lesson:
       type: object
       properties:
+        id:
+          type: integer
+          example: 1
         subject:
           type: string
           example: 'Операционные системы'
@@ -856,6 +936,8 @@ components:
     LessonDetails:
       type: object
       properties:
+        id:
+          type: integer
         startTime:
           type: string
           format: time
@@ -867,22 +949,52 @@ components:
         teacher:
           type: string
           example: 'Иванов И.И.'
-        upcomingHomeworkId:
-          type: integer
+        upcomingHomework:
+          $ref: '#/components/schemas/HomeworkResponse'
         resource:
           type: array
           items:
-            $ref: '#/components/schemas/Resource'
+            $ref: '#/components/schemas/ResourceResponse'
     RoomList:
       type: array
       items:
         type: string
         example: '3107'
+    SubjectList:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+            example: 'Операционные системы'
     StudentList:
       type: array
       items:
-        type: string
-        example: 'Иванов Иван Иванович'
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          name:
+            type: string
+            example: 'Иванов Иван Иванович'
+    ModeratorList:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          name:
+            type: string
+            example: 'Иванов Иван Иванович'
+          type:
+            type: string
+            enum: [GLOBAL, GROUP]
     Resource:
       type: object
       properties:
@@ -897,5 +1009,23 @@ components:
           type: string
           format: uri
         files: 
+          type: string
+          example: 'null'
+    ResourceResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [ PERMANENT, TEMPORARY ]
+        expirationDate:
+          type: string
+          format: uri
+        files:
           type: string
           example: 'null'
