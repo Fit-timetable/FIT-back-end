@@ -1,8 +1,8 @@
 package ru.nsu.fit.schedule.api.dto;
 
-import ru.nsu.fit.schedule.impl.domain.model.LessonParity;
-import ru.nsu.fit.schedule.impl.domain.model.LessonPlace;
-import ru.nsu.fit.schedule.impl.domain.model.LessonType;
+import ru.nsu.fit.lesson.impl.domain.model.LessonParity;
+import ru.nsu.fit.lesson.impl.domain.model.LessonPlace;
+import ru.nsu.fit.lesson.impl.domain.model.LessonType;
 
 public record LessonScheduleDto(
     String subject,
