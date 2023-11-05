@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nsu.fit.group.impl.domain.model.entities.Group;
 import ru.nsu.fit.group.impl.domain.model.repositories.GroupRepository;
+import ru.nsu.fit.lesson.impl.domain.model.entities.Lesson;
+import ru.nsu.fit.lesson.impl.domain.model.repositories.LessonRepository;
 import ru.nsu.fit.schedule.api.ScheduleService;
 import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
 import ru.nsu.fit.schedule.impl.domain.model.entities.PinnedSchedule;
@@ -20,6 +22,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private GroupRepository groupRepository;
     private StudentRepository studentRepository;
     private PinnedScheduleRepository pinnedScheduleRepository;
+    private LessonRepository lessonRepository;
 
     @Override
     public WeekScheduleDto getScheduleByGroup(String group) {
@@ -44,5 +47,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void resetSchedule(Long studentId) {
         PinnedSchedule pinnedSchedule = pinnedScheduleRepository.findByStudentId(studentId).orElseThrow();
         pinnedScheduleRepository.delete(pinnedSchedule);
+    }
+
+    @Override
+    public Lesson createLesson(Lesson lesson) {
+        return lessonRepository.save(lesson);
     }
 }
