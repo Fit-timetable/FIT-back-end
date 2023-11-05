@@ -7,6 +7,8 @@ public interface ScheduleService {
 
     WeekScheduleDto getScheduleByRoom(String room);
 
+    WeekScheduleDto getPinnedSchedule(Long studentId);
+
     void pinSchedule(Long studentId, String group);
 
     void resetSchedule(Long studentId);
