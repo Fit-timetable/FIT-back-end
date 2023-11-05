@@ -9,6 +9,7 @@ import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
 import ru.nsu.fit.schedule.impl.domain.model.entities.PinnedSchedule;
 import ru.nsu.fit.schedule.impl.domain.model.repositories.PinnedScheduleRepository;
 import ru.nsu.fit.schedule.impl.domain.service.DomainScheduleService;
+import ru.nsu.fit.schedule.impl.domain.service.ScheduleParser;
 import ru.nsu.fit.student.impl.domain.model.entities.Student;
 import ru.nsu.fit.student.impl.domain.model.repositories.StudentRepository;
 
@@ -22,12 +23,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public WeekScheduleDto getScheduleByGroup(String group) {
-        return null;
+        return ScheduleParser.parseByGroup(group);
     }
 
     @Override
     public WeekScheduleDto getScheduleByRoom(String room) {
-        return null;
+        return ScheduleParser.parseByRoom(room);
     }
 
     @Override
