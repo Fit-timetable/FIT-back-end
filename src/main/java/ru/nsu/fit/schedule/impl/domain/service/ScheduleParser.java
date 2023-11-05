@@ -4,13 +4,11 @@ import lombok.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Service;
 
 import ru.nsu.fit.schedule.api.dto.DayScheduleDto;
 import ru.nsu.fit.schedule.api.dto.LessonScheduleDto;
 import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
 import org.springframework.stereotype.Component;
-import ru.nsu.fit.lesson.impl.domain.model.Lesson;
 import ru.nsu.fit.lesson.impl.domain.model.LessonParity;
 import ru.nsu.fit.lesson.impl.domain.model.LessonPlace;
 import ru.nsu.fit.lesson.impl.domain.model.LessonType;

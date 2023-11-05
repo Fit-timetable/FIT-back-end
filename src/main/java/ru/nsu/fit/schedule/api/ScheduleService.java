@@ -1,5 +1,7 @@
 package ru.nsu.fit.schedule.api;
 
+import ru.nsu.fit.lesson.impl.domain.model.LessonForm;
+import ru.nsu.fit.lesson.impl.domain.model.entities.Lesson;
 import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
 
 public interface ScheduleService {
@@ -12,4 +14,6 @@ public interface ScheduleService {
     void pinSchedule(Long studentId, String group);
 
     void resetSchedule(Long studentId);
+
+    Lesson createLesson(LessonForm lessonForm);
 }

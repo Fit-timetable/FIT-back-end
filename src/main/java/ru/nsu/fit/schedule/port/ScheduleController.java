@@ -2,6 +2,8 @@ package ru.nsu.fit.schedule.port;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import ru.nsu.fit.lesson.impl.domain.model.LessonForm;
 import ru.nsu.fit.schedule.api.ScheduleService;
 import ru.nsu.fit.schedule.api.dto.PinRequestDto;
 import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
@@ -37,5 +39,10 @@ public class ScheduleController {
     @GetMapping(ROOM_URL + "/{room}")
     public WeekScheduleDto getScheduleByRoom(@PathVariable String room){
         return scheduleService.getScheduleByRoom(room);
+    }
+
+    @PostMapping()
+    public Long createLesson(@RequestBody LessonForm lesson) {
+        return scheduleService.createLesson(lesson).getId();
     }
 }

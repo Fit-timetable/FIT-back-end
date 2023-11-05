@@ -8,4 +8,5 @@ public interface ScheduleUrl {
     String PIN_URL = "/pin";
     String GROUP_URL = "/group";
     String ROOM_URL = "/room";
+    String LESSON_URL = "/lesson";
 }
