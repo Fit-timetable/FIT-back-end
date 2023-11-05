@@ -41,7 +41,7 @@ public class ScheduleController {
         return scheduleService.getScheduleByRoom(room);
     }
 
-    @PostMapping()
+    @PostMapping(LESSON_URL)
     public Long createLesson(@RequestBody LessonForm lesson) {
         return scheduleService.createLesson(lesson).getId();
     }
