@@ -24,6 +24,11 @@ public class ScheduleController {
         scheduleService.pinSchedule(pinRequestDto.studentId(), pinRequestDto.group());
     }
 
+    @GetMapping(PIN_URL)
+    public WeekScheduleDto getPinnedSchedule(@RequestParam("student_id") Long studentId) {
+        return scheduleService.getPinnedSchedule(studentId);
+    }
+
     @GetMapping(GROUP_URL + "/{group}")
     public WeekScheduleDto getScheduleByGroup(@PathVariable String group){
         return scheduleService.getScheduleByGroup(group);
@@ -33,6 +38,4 @@ public class ScheduleController {
     public WeekScheduleDto getScheduleByRoom(@PathVariable String room){
         return scheduleService.getScheduleByRoom(room);
     }
-
-
 }

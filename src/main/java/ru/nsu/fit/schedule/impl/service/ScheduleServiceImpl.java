@@ -32,6 +32,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public WeekScheduleDto getPinnedSchedule(Long studentId) {
+        PinnedSchedule pinnedSchedule = pinnedScheduleRepository.findByStudentId(studentId).orElseThrow();
+        Group group = pinnedSchedule.getGroup();
+        return getScheduleByGroup(group.getNumber());
+    }
+
+
+    @Override
     public void pinSchedule(Long studentId, String groupNumber) {
         Group group = groupRepository.findByNumber(groupNumber).orElseThrow();
         Student student = studentRepository.findById(studentId).orElseThrow();
