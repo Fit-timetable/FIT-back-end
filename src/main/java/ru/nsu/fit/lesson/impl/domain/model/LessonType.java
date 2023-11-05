@@ -1,4 +1,4 @@
-package ru.nsu.fit.schedule.impl.domain.model;
+package ru.nsu.fit.lesson.impl.domain.model;
 
 public enum LessonType {
     LECTURE,

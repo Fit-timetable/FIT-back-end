@@ -1,0 +1,901 @@
+openapi: 3.0.0
+info:
+  title: FIT-Timetable API
+  version: 0.0.3
+paths:
+  /schedule/group/{group}:
+    get:
+      summary: Получить расписание группы
+      tags:
+        - schedule 
+      parameters:
+        - name: group
+          in: path
+          required: true
+          description: Номер группы
+          schema:
+            type: string
+            example: '20201'
+      responses:
+        '200':
+          description: Расписание
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WeekSchedule'
+    put:
+      summary: Редактировать расписание группы
+      tags:
+        - schedule 
+      parameters:
+        - name: group
+          in: path
+          required: true
+          description: Номер группы
+          schema:
+            type: string
+            example: '20201'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WeekSchedule'
+      responses:
+        '200':
+          description: Расписание
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WeekSchedule'
+  /schedule/room/{room}:
+    get:
+      summary: Получить расписание аудитории
+      tags:
+        - schedule 
+      parameters:
+        - name: room
+          in: path
+          required: true
+          description: Номер аудитории
+          schema:
+            type: string
+            example: 3107
+      responses:
+        '200':
+          description: Расписание  
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeekSchedule'
+  /schedule/teacher/{teacher}:
+    get:
+      summary: Получить расписание преподавателя
+      tags:
+        - schedule 
+      parameters:
+        - name: teacher
+          in: path
+          required: true
+          description: Id преподавателя
+          schema:
+            type: string
+            example: 'f1e646d1-06e8-11e6-8152-000c29b4927a'
+      responses:
+        '200':
+          description: Расписание
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeekSchedule'
+  /schedule/room/free:
+    get:
+      summary: Получить список свободных аудиторий
+      tags:
+        - schedule 
+      parameters:
+        - name: date
+          in: query
+          required: true
+          description: Дата и время
+          schema:
+            type: string
+            format: date-time
+            example: '2012-12-31T22:00:00.000Z'
+      responses:
+        '200':
+          description: Список аудиторий
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomList'
+  /schedule/pin:
+    post:
+      tags:
+        - schedule
+      summary: Закрепить расписание группы за пользователем
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                studentId:
+                  type: integer
+                  example: 1
+                group:
+                  type: string
+                  example: '20201'
+      responses:
+        '200':
+          description: Группа успешно закреплена за пользователем
+  /schedule/reset:
+    post:
+      summary: Cбросить все изменения и загрузить расписание с официального сайта 
+      tags:
+        - schedule 
+      parameters:
+        - name: student_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Расписание 
+  /lesson:
+    post:
+      summary: Добавить новое занятие 
+      tags:
+        - lesson 
+      requestBody:
+        description: Данные для добавления нового занятия
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LessonForm'
+      responses:
+        '200':
+          description: ''  
+  /lesson/{id}:
+    parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор занятия
+          schema:
+            type: integer
+            example: 1
+    get:
+      summary: Получить детали занятия
+      tags:
+        - lesson
+      responses:
+        '200':
+          description: Детали занятия
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonDetails'
+    put:
+      summary: Редактировать занятие
+      tags:
+        - lesson 
+      requestBody:
+        description: Данные для редактирования занятия
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subjectId:
+                  type: integer
+                  example: 1
+                date:
+                  $ref: '#/components/schemas/LessonDate'
+                teacher:
+                  type: string
+                  example: 'f1e646d1-06e8-11e6-8152-000c29b4927a'
+                place:
+                  $ref: '#/components/schemas/LessonPlace'
+      responses:
+        '200':
+          description: '' 
+    delete:
+      summary: Удалить занятие
+      tags:
+        - lesson 
+      responses:
+        '200':
+          description: '' 
+  /lesson/{id}/cancel:
+    post:
+      summary: Удалить занятие на определенную дату
+      tags:
+        - lesson 
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: Дата
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+      responses:
+        '200':
+          description: ''  
+  /student/{student-id}/homework:
+    get:
+      summary: Получить список домашних заданий с учетом фильтров
+      tags:
+        - homework
+      parameters:
+        - name: student-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - name: subject
+          in: query
+          description: Фильтр по предметам
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: dueDate
+          in: query
+          description: Фильтр по сроку выполнения
+          schema:
+            type: object
+            properties:
+              from:
+                type: string
+                format: date
+                description: Начальная дата
+              to:
+                type: string
+                format: date
+                description: Конечная дата
+        - name: completed
+          in: query
+          description: Фильтр по статусу выполнения
+          schema:
+            type: boolean
+        - name: sort_by
+          in: query
+          description: Поле для сортировки
+          schema:
+            type: string
+            enum: [DUE_DATE, ESTIMATED_TIME, SUBJECT]
+        - name: sort_order
+          in: query
+          description: Порядок сортировки
+          schema:
+            type: string
+            enum: [ASC, DESC]
+      responses:
+        '200':
+          description: Список домашних заданий с учетом выбранных фильтров
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HomeworkForm'
+
+    post:
+      summary: Добавить домашнее задание
+      tags:
+        - homework
+      parameters:
+        - name: student-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: Данные для добавления домашнего задания
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HomeworkForm'
+      responses:
+        '201':
+          description: Домашнее задание успешно добавлено
+  /homework/{id}:
+    get:
+      summary: Получить домашнее задание по ID
+      tags:
+        - homework
+      parameters:
+        - name: id
+          in: path
+          description: ID домашнего задания
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Домашнее задание
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkForm'
+    put:
+      summary: Редактировать домашнее задание
+      tags:
+        - homework
+      parameters:
+        - name: id
+          in: path
+          description: ID домашнего задания
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Новые данные для редактирования домашнего задания
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HomeworkForm'
+      responses:
+        '200':
+          description: Домашнее задание успешно отредактировано
+    delete:
+      summary: Удалить домашнее задание
+      tags:
+        - homework
+      parameters:
+        - name: id
+          in: path
+          description: ID домашнего задания
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Домашнее задание успешно удалено
+
+  /homework/{id}/complete:
+    post:
+      summary: Отметить задание выполненным
+      tags:
+        - homework
+      parameters:
+        - name: id
+          in: path
+          description: ID домашнего задания
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Задание успешно отмечено выполненным
+  /request-signup:
+    post:
+      tags:
+        - auth
+      summary: Запрос на отправку кода подтверждения
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'i.ivanov@g.nsu.ru'
+                  description: Email пользователя
+      responses:
+        '200':
+          description: Успешная регистрация
+        '400':
+          description: Неверный формат запроса или некорректные данные
+  /confirm-signup:
+    post:
+      tags:
+        - auth
+      summary: Подтверждение регистрации
+      requestBody:
+        description: Код подтверждения, отправленный на почту
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'i.ivanov@g.nsu.ru'
+                  description: Email пользователя
+                password:
+                  type: string
+                  format: password
+                  example: 'secretpassword'
+                  description: Пароль пользователя
+                confirmationCode:
+                  type: number
+                  example: '846511'
+      responses:
+        '200':
+          description: Регистрация успешно подтверждена
+        '400':
+          description: Неверный формат запроса или некорректные данные
+        '401':
+          description: Неправильный код подтверждения
+  /group:
+    get:
+      summary: Получить список доступных групп
+      responses:
+        '200':
+          description: Список групп
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+  /group/{group}/members:
+    get:
+      parameters:
+        - name: group
+          in: path
+          required: true
+          description: Номер группы
+          schema:
+            type: string
+            example: '20201'
+      summary: Получить список студентов группы
+      responses:
+        '200':
+          description: Список студентов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentList'
+  /student/{id}/group:
+    post:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id студента
+          schema:
+            type: integer
+            example: 1
+      summary: Добавить студента в группу
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                group:
+                  type: string
+                  example: '20201'
+      responses:
+        '200':
+          description: ''
+  /moderator:
+    get:
+      summary: Получить список модераторов группы и общих модераторов
+      tags:
+        - moderation
+      responses:
+        '200':
+          description: Список модераторов группы и общих модераторов
+  /global-moderator/{id}:
+    post:
+      summary: Открыть доступ к личному кабинету модератора
+      tags:
+        - moderation
+      parameters:
+        - name: id
+          in: path
+          description: ID пользователя
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Доступ к личному кабинету успешно открыт
+    delete:
+      summary: Закрыть доступ к личному кабинету модератора
+      tags:
+        - moderation
+      parameters:
+        - name: id
+          in: path
+          description: ID модератора
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Доступ к личному кабинету успешно закрыт
+  /group-moderator/{id}:
+    post:
+      summary: Открыть доступ к личному кабинету модератора
+      tags:
+        - moderation
+      parameters:
+        - name: id
+          in: path
+          description: ID пользователя
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                group:
+                  type: string
+                  example: '20201'
+      responses:
+        '204':
+          description: Доступ к личному кабинету успешно открыт
+    delete:
+      summary: Закрыть доступ к личному кабинету модератора
+      tags:
+        - moderation
+      parameters:
+        - name: id
+          in: path
+          description: ID модератора
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Доступ к личному кабинету успешно закрыт
+  /group/{group}/resource:
+    parameters:
+      - name: group
+        description: Номер группы
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '20201'
+      - name: subject
+        description: Id предмета
+        in: query
+        required: true
+        schema:
+          type: string
+          example: '1'
+    get:
+      tags:
+        - resource
+      summary: Получить ресурсы группы
+      responses:
+        '200':
+          description: Ресурсы группы
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
+    post:
+      tags:
+        - resource
+      summary: Добавить ресурс группы
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: ''
+  /resource/{id}:
+    parameters:
+      - name: id
+        description: Id ресурса
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 1
+    put:
+      tags:
+        - resource
+      summary: Редактировать ресурс
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: ''
+    delete:
+      tags:
+        - resource
+      summary: Удалить ресурс
+      responses:
+        '200':
+          description: ''
+  /resource:
+    parameters:
+      - name: subject
+        description: Id предмета
+        in: query
+        required: true
+        schema:
+          type: string
+          example: '1'
+    get:
+      tags:
+        - resource
+      summary: Получить ресурсы потока
+      responses:
+        '200':
+          description: Список ресурсов группы
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
+    post:
+      tags:
+        - resource
+      summary: Добавить ресурс потока
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: ''
+  /resource/pending:
+    parameters:
+      - name: subject
+        description: Id предмета
+        in: query
+        required: true
+        schema:
+          type: string
+          example: '1'
+    get:
+      tags:
+        - resource
+      summary: Получить ожидающие проверки ресурсы
+      responses:
+        '200':
+          description: Ожидающие проверки ресурсы
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
+  /resource/pending/{id}/accept:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 1
+    post:
+      tags:
+        - resource
+      summary: Принять предложенный ресурс
+      responses:
+        '200':
+          description: ''
+  /resource/pending/{id}/reject:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 1
+    post:
+      tags:
+        - resource
+      summary: Отклонить предложенный ресурс
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                purpose:
+                  type: string
+      responses:
+        '200':
+          description: ''
+                  
+components:
+  schemas:
+    HomeworkForm:
+      type: object
+      properties:
+        subjectId:
+          type: integer
+          example: 1
+        dueDate:
+          type: string
+          format: date
+        text:
+          type: string
+          description: Текст задания
+        estimatedTime:
+          type: integer
+          example: 3600
+        file:
+          type: string
+          format: byte
+        isGroupShared:
+          type: boolean
+        notificationsPeriod:
+          type: integer
+          example: 86400
+        notificationDaysBeforeDeadline:
+          type: integer
+          example: 3
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: '20201'
+    WeekSchedule:
+      type: object
+      properties:
+        monday:
+          $ref: '#/components/schemas/DaySchedule'
+        tuesday:
+          $ref: '#/components/schemas/DaySchedule'
+        wednesday:
+          $ref: '#/components/schemas/DaySchedule'
+        thursday:
+          $ref: '#/components/schemas/DaySchedule'
+        friday:
+          $ref: '#/components/schemas/DaySchedule'
+        saturday:
+          $ref: '#/components/schemas/DaySchedule'
+    DaySchedule:
+      type: object
+      properties:
+        lessons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lesson'
+    Lesson:
+      type: object
+      properties:
+        subject:
+          type: string
+          example: 'Операционные системы'
+        type:
+          type: string
+          enum: [LECTURE, SEMINAR, PRACTICE]
+        startTime:
+          type: string
+          format: time
+        teacher:
+          type: string
+          example: 'Иванов И.И.'
+        place:
+          $ref: '#/components/schemas/LessonPlace'
+        parity:
+          type: string
+          enum: [EVEN, ODD, ALWAYS]
+    LessonForm:
+      type: object
+      properties:
+        studentId:
+          type: integer
+          example: 1
+        subjectId:
+          type: integer
+          example: 1
+        type:
+          type: string
+          enum: [LECTURE, SEMINAR, PRACTICE]
+        date:
+          $ref: '#/components/schemas/LessonDate'
+        place:
+          $ref: '#/components/schemas/LessonPlace'
+        parity:
+          type: string
+          enum: [EVEN, ODD, ALWAYS]
+    LessonDate:
+      type: object
+      properties:
+        weekDay:
+          type: string
+          enum: [MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY]
+        startTime:
+          type: string
+          format: time
+    LessonPlace:
+      type: object
+      properties:
+        room:
+          type: string
+          example: '3107'
+        meetLink:
+          type: string
+          format: uri
+          example: 'abc-abcd-abc'
+    LessonDetails:
+      type: object
+      properties:
+        startTime:
+          type: string
+          format: time
+        subject:
+          type: string
+          example: 'Операционные системы'
+        place:
+          $ref: '#/components/schemas/LessonPlace'
+        teacher:
+          type: string
+          example: 'Иванов И.И.'
+        upcomingHomeworkId:
+          type: integer
+        resource:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+    RoomList:
+      type: array
+      items:
+        type: string
+        example: '3107'
+    StudentList:
+      type: array
+      items:
+        type: string
+        example: 'Иванов Иван Иванович'
+    Resource:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [PERMANENT, TEMPORARY]
+        expirationDate:
+          type: string
+          format: uri
+        files: 
+          type: string
+          example: 'null'

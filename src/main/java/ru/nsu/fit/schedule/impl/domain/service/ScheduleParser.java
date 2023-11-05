@@ -1,23 +1,30 @@
 package ru.nsu.fit.schedule.impl.domain.service;
 
+import lombok.*;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import ru.nsu.fit.schedule.api.dto.DayScheduleDto;
 import ru.nsu.fit.schedule.api.dto.LessonScheduleDto;
 import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
-import ru.nsu.fit.schedule.impl.domain.model.LessonParity;
-import ru.nsu.fit.schedule.impl.domain.model.LessonPlace;
-import ru.nsu.fit.schedule.impl.domain.model.LessonType;
+import org.springframework.stereotype.Component;
+import ru.nsu.fit.lesson.impl.domain.model.Lesson;
+import ru.nsu.fit.lesson.impl.domain.model.LessonParity;
+import ru.nsu.fit.lesson.impl.domain.model.LessonPlace;
+import ru.nsu.fit.lesson.impl.domain.model.LessonType;
 import ru.nsu.fit.schedule.port.ScheduleUrl;
 
 import java.util.*;
 
-@Service
+@Component
+@Getter
+@AllArgsConstructor
 public class ScheduleParser {
+    private static final int DAYS_IN_WEEK = 6;
+
+
     private String checkNullable(Element element) {
         return (element != null) ? element.text() : "";
     }
@@ -59,13 +66,11 @@ public class ScheduleParser {
     public static WeekScheduleDto parseByGroup(String group) {
         List<DayScheduleDto> days = new ArrayList<>(); 
         List<LessonScheduleDto> lessons = new ArrayList<>();
-        
-        int DAYS_IN_WEEK = 6;
 
         try {
             ScheduleParser scheduleParser = new ScheduleParser();
 
-            Document document = Jsoup.connect(ScheduleUrl.GROUP_URL + group).get();
+            Document document = Jsoup.connect(ScheduleUrl.NSU_GROUP_URL + group).get();
 
             Elements scheduleElements = document.select("table.time-table");
 
@@ -117,13 +122,11 @@ public class ScheduleParser {
     public static WeekScheduleDto parseByRoom(String room) {
         List<DayScheduleDto> days = new ArrayList<>(); 
         List<LessonScheduleDto> lessons = new ArrayList<>();
-        
-        int DAYS_IN_WEEK = 6;
 
         try {
             ScheduleParser scheduleParser = new ScheduleParser();
 
-            Document document = Jsoup.connect(ScheduleUrl.ROOM_URL + room).get();
+            Document document = Jsoup.connect(ScheduleUrl.NSU_ROOM_URL + room).get();
 
             Elements scheduleElements = document.select("table.time-table");
 
