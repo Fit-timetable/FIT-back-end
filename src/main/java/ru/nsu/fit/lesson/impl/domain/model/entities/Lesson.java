@@ -6,10 +6,9 @@ import ru.nsu.fit.group.impl.domain.model.entities.Group;
 import ru.nsu.fit.schedule.impl.domain.model.DayName;
 import ru.nsu.fit.lesson.impl.domain.model.LessonParity;
 import ru.nsu.fit.lesson.impl.domain.model.LessonType;
-import ru.nsu.fit.schedule.impl.domain.model.entities.Subject;
+import ru.nsu.fit.subject.impl.domain.model.entities.Subject;
 
-import java.time.ZonedDateTime;
-
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "lesson")
@@ -24,7 +23,7 @@ public class Lesson {
     @Column(name = "day_name", nullable = false)
     private DayName dayName;
     @Column(name = "start_time", nullable = false)
-    private ZonedDateTime startTime;
+    private LocalDateTime startTime;
     @Column(name = "room")
     private String room;
     @Column(name = "teacher")

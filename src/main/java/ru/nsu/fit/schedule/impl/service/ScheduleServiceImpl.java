@@ -1,6 +1,7 @@
 package ru.nsu.fit.schedule.impl.service;
 
 import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import ru.nsu.fit.group.impl.domain.model.entities.Group;
 import ru.nsu.fit.group.impl.domain.model.repositories.GroupRepository;

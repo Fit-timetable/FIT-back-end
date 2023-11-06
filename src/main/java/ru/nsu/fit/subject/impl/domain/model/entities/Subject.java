@@ -1,4 +1,4 @@
-package ru.nsu.fit.schedule.impl.domain.model.entities;
+package ru.nsu.fit.subject.impl.domain.model.entities;
 
 import lombok.*;
 import jakarta.persistence.*;
