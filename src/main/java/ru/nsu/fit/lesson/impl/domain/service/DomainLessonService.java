@@ -1,15 +1,13 @@
 package ru.nsu.fit.lesson.impl.domain.service;
 
-import org.springframework.stereotype.Service;
-
-import ru.nsu.fit.group.impl.domain.model.entities.Group;
 import ru.nsu.fit.lesson.api.LessonForm;
 import ru.nsu.fit.lesson.impl.domain.model.entities.Lesson;
+import ru.nsu.fit.student.impl.domain.model.entities.Student;
+import ru.nsu.fit.student.impl.domain.model.entities.StudentLesson;
 import ru.nsu.fit.subject.impl.domain.model.entities.Subject;
 
-@Service
-public class LessonFormMapper {
-    public static Lesson mapping(LessonForm lessonForm, Subject subject, Group group){
+public class DomainLessonService {
+    public static Lesson mapping(LessonForm lessonForm, Subject subject){
         Lesson lesson = new Lesson();
         lesson.setDayName(lessonForm.date().weekDay());
         lesson.setStartTime(lessonForm.date().startTime());
@@ -19,8 +17,17 @@ public class LessonFormMapper {
         lesson.setLessonType(lessonForm.type());
         lesson.setLessonParity(lessonForm.parity());
         lesson.setSubject(subject); 
-        lesson.setGroup(group);
+        lesson.setGroup(null);
 
         return lesson;
     }
+
+    public static StudentLesson mapping(Lesson lesson, Student student){
+        StudentLesson studentLesson = new StudentLesson();
+        studentLesson.setLesson(lesson);
+        studentLesson.setStudent(student);
+        studentLesson.setVisited(true);
+
+        return studentLesson;
+    } 
 }
