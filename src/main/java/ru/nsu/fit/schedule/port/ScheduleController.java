@@ -2,7 +2,6 @@ package ru.nsu.fit.schedule.port;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import ru.nsu.fit.schedule.api.ScheduleService;
 import ru.nsu.fit.schedule.api.dto.PinRequestDto;
 import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
@@ -30,13 +29,13 @@ public class ScheduleController {
         return scheduleService.getPinnedSchedule(studentId);
     }
 
-    @GetMapping(GROUP_URL + "/{group}")
-    public WeekScheduleDto getScheduleByGroup(@PathVariable String group){
+    @GetMapping(GROUP_URL)
+    public WeekScheduleDto getScheduleByGroup(@PathVariable String group) {
         return scheduleService.getScheduleByGroup(group);
     }
 
-    @GetMapping(ROOM_URL + "/{room}")
-    public WeekScheduleDto getScheduleByRoom(@PathVariable String room){
+    @GetMapping(ROOM_URL)
+    public WeekScheduleDto getScheduleByRoom(@PathVariable String room) {
         return scheduleService.getScheduleByRoom(room);
     }
 }

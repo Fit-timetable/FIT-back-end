@@ -1,19 +1,19 @@
-package ru.nsu.fit.student.impl.domain.model.entities;
+package ru.nsu.fit.subject.impl.domain.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "student")
+@Table(name = "subject")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, unique = true)
-    private String email;
-    @Column(nullable = false)
-    private String password;
+    private String name;
 }

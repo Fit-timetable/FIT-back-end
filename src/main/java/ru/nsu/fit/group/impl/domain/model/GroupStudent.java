@@ -1,8 +1,10 @@
-package ru.nsu.fit.group.impl.domain.model.entities;
+package ru.nsu.fit.group.impl.domain.model;
 
-import lombok.*;
 import jakarta.persistence.*;
-import ru.nsu.fit.student.impl.domain.model.entities.Student;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.nsu.fit.student.impl.domain.model.Student;
 
 @Entity
 @Table(name = "group_student", uniqueConstraints = {@UniqueConstraint(columnNames = {"student_id", "group_id"})})

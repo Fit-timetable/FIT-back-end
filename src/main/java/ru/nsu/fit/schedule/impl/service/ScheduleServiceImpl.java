@@ -1,18 +1,17 @@
 package ru.nsu.fit.schedule.impl.service;
 
 import lombok.AllArgsConstructor;
-
 import org.springframework.stereotype.Service;
-import ru.nsu.fit.group.impl.domain.model.entities.Group;
-import ru.nsu.fit.group.impl.domain.model.repositories.GroupRepository;
+import ru.nsu.fit.group.impl.data.GroupRepository;
+import ru.nsu.fit.group.impl.domain.model.Group;
 import ru.nsu.fit.schedule.api.ScheduleService;
 import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
-import ru.nsu.fit.schedule.impl.domain.model.entities.PinnedSchedule;
-import ru.nsu.fit.schedule.impl.domain.model.repositories.PinnedScheduleRepository;
+import ru.nsu.fit.schedule.impl.data.PinnedScheduleRepository;
+import ru.nsu.fit.schedule.impl.domain.model.PinnedSchedule;
 import ru.nsu.fit.schedule.impl.domain.service.DomainScheduleService;
 import ru.nsu.fit.schedule.impl.domain.service.ScheduleParser;
-import ru.nsu.fit.student.impl.domain.model.entities.Student;
-import ru.nsu.fit.student.impl.domain.model.repositories.StudentRepository;
+import ru.nsu.fit.student.impl.data.StudentRepository;
+import ru.nsu.fit.student.impl.domain.model.Student;
 
 @Service
 @AllArgsConstructor

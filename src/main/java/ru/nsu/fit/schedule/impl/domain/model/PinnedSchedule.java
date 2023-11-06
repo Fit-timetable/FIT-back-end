@@ -1,9 +1,11 @@
-package ru.nsu.fit.schedule.impl.domain.model.entities;
+package ru.nsu.fit.schedule.impl.domain.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-import ru.nsu.fit.group.impl.domain.model.entities.Group;
-import ru.nsu.fit.student.impl.domain.model.entities.Student;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.nsu.fit.group.impl.domain.model.Group;
+import ru.nsu.fit.student.impl.domain.model.Student;
 
 @Entity
 @Table(name = "pinned_schedule")

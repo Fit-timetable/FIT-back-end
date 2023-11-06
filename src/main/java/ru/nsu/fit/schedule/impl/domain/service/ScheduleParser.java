@@ -1,20 +1,22 @@
 package ru.nsu.fit.schedule.impl.domain.service;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.*;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import ru.nsu.fit.schedule.api.dto.DayScheduleDto;
-import ru.nsu.fit.schedule.api.dto.LessonScheduleDto;
-import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
 import org.springframework.stereotype.Component;
 import ru.nsu.fit.lesson.impl.domain.model.LessonParity;
 import ru.nsu.fit.lesson.impl.domain.model.LessonPlace;
 import ru.nsu.fit.lesson.impl.domain.model.LessonType;
+import ru.nsu.fit.schedule.api.dto.DayScheduleDto;
+import ru.nsu.fit.schedule.api.dto.LessonScheduleDto;
+import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
 import ru.nsu.fit.schedule.port.ScheduleUrl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Getter
@@ -32,29 +34,21 @@ public class ScheduleParser {
     }
 
     private LessonParity getLessonParity(String lessonParity) {
-        switch (lessonParity) {
-            case "Четная":
-                return LessonParity.EVEN;
-            case "Нечетная":
-                return LessonParity.ODD;
-            case "":
-                return LessonParity.ALWAYS;
-            default:
-                return null;
-        }
+        return switch (lessonParity) {
+            case "Четная" -> LessonParity.EVEN;
+            case "Нечетная" -> LessonParity.ODD;
+            case "" -> LessonParity.ALWAYS;
+            default -> null;
+        };
     }
 
-    private LessonType getLessonType(String lessonType){
-        switch (lessonType) {
-            case "лек":
-                return LessonType.LECTURE;
-            case "пр":
-                return LessonType.SEMINAR;
-            case "лаб":
-                return LessonType.LABORATORY;
-            default:
-                return null;
-        }
+    private LessonType getLessonType(String lessonType) {
+        return switch (lessonType) {
+            case "лек" -> LessonType.LECTURE;
+            case "пр" -> LessonType.SEMINAR;
+            case "лаб" -> LessonType.LABORATORY;
+            default -> null;
+        };
     }
 
     private String getTime(Element timeElement) {
@@ -62,7 +56,7 @@ public class ScheduleParser {
     }
 
     public static WeekScheduleDto parseByGroup(String group) {
-        List<DayScheduleDto> days = new ArrayList<>(); 
+        List<DayScheduleDto> days = new ArrayList<>();
         List<LessonScheduleDto> lessons = new ArrayList<>();
 
         try {
@@ -81,7 +75,7 @@ public class ScheduleParser {
                         if (cells.isEmpty()) {
                             break;
                         }
-                        
+
                         Element currentCell = cells.get(i + 1);
 
                         for (int k = 0; k < currentCell.select(".subject").size(); k++) {
@@ -92,10 +86,10 @@ public class ScheduleParser {
                             LessonPlace place = new LessonPlace(scheduleParser.getElementText(currentCell.select(".room"), k), null);
                             LessonParity parity = scheduleParser.getLessonParity(scheduleParser.getElementText(currentCell.select(".week"), k));
 
-                            LessonScheduleDto lessonScheduleDto = new LessonScheduleDto(subject, type, startTime, teacher, place, parity);
+                            LessonScheduleDto lessonScheduleDto = new LessonScheduleDto(null, subject, type, startTime, teacher, place, parity);
                             lessons.add(lessonScheduleDto);
                         }
-                        
+
                     }
                 }
 
@@ -118,7 +112,7 @@ public class ScheduleParser {
     }
 
     public static WeekScheduleDto parseByRoom(String room) {
-        List<DayScheduleDto> days = new ArrayList<>(); 
+        List<DayScheduleDto> days = new ArrayList<>();
         List<LessonScheduleDto> lessons = new ArrayList<>();
 
         try {
@@ -137,7 +131,7 @@ public class ScheduleParser {
                         if (cells.isEmpty()) {
                             break;
                         }
-                        
+
                         Element currentCell = cells.get(i + 1);
 
                         for (int k = 0; k < currentCell.select(".subject").size(); k++) {
@@ -148,10 +142,10 @@ public class ScheduleParser {
                             LessonPlace place = new LessonPlace(room, null);
                             LessonParity parity = scheduleParser.getLessonParity(scheduleParser.getElementText(currentCell.select(".week"), k));
 
-                            LessonScheduleDto lessonScheduleDto = new LessonScheduleDto(subject, type, startTime, teacher, place, parity);
+                            LessonScheduleDto lessonScheduleDto = new LessonScheduleDto(null, subject, type, startTime, teacher, place, parity);
                             lessons.add(lessonScheduleDto);
                         }
-                        
+
                     }
                 }
 

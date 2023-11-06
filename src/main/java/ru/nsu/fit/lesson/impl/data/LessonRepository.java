@@ -1,4 +1,4 @@
-package ru.nsu.fit.lesson.impl.domain.model.repositories;
+package ru.nsu.fit.lesson.impl.data;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

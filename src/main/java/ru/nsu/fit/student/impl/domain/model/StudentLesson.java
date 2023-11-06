@@ -1,7 +1,9 @@
-package ru.nsu.fit.student.impl.domain.model.entities;
+package ru.nsu.fit.student.impl.domain.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.nsu.fit.lesson.impl.domain.model.entities.Lesson;
 
 @Data
