@@ -1,14 +1,18 @@
 package ru.nsu.fit.student.impl.service;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.nsu.fit.student.api.StudentService;
-import ru.nsu.fit.student.impl.domain.model.entities.Student;
-import ru.nsu.fit.student.impl.domain.model.entities.StudentLesson;
-import ru.nsu.fit.student.impl.domain.model.repositories.StudentLessonRepository;
-import ru.nsu.fit.student.impl.domain.model.repositories.StudentRepository;
+import ru.nsu.fit.student.impl.data.StudentLessonRepository;
+import ru.nsu.fit.student.impl.data.StudentRepository;
+import ru.nsu.fit.student.impl.domain.model.Student;
+import ru.nsu.fit.student.impl.domain.model.StudentLesson;
 
+@AllArgsConstructor
+@Service
 public class StudentServiceImpl implements StudentService {
-    private StudentLessonRepository studentLessonRepository;
-    private StudentRepository studentRepository;
+    private final StudentLessonRepository studentLessonRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     public Student getStudent(Long id) {

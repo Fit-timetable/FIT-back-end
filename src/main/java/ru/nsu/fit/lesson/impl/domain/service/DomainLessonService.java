@@ -1,11 +1,13 @@
 package ru.nsu.fit.lesson.impl.domain.service;
 
+import org.springframework.stereotype.Service;
 import ru.nsu.fit.lesson.api.LessonForm;
 import ru.nsu.fit.lesson.impl.domain.model.entities.Lesson;
-import ru.nsu.fit.student.impl.domain.model.entities.Student;
-import ru.nsu.fit.student.impl.domain.model.entities.StudentLesson;
-import ru.nsu.fit.subject.impl.domain.model.entities.Subject;
+import ru.nsu.fit.student.impl.domain.model.Student;
+import ru.nsu.fit.student.impl.domain.model.StudentLesson;
+import ru.nsu.fit.subject.impl.domain.model.Subject;
 
+@Service
 public class DomainLessonService {
     public static Lesson mapping(LessonForm lessonForm, Subject subject){
         Lesson lesson = new Lesson();
