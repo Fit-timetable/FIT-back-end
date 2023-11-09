@@ -24,7 +24,6 @@ import java.util.List;
 public class ScheduleParser {
     private static final int DAYS_IN_WEEK = 6;
 
-
     private String checkNullable(Element element) {
         return (element != null) ? element.text() : "";
     }
@@ -57,8 +56,6 @@ public class ScheduleParser {
 
     public static WeekScheduleDto parseByGroup(String group) {
         List<DayScheduleDto> days = new ArrayList<>();
-        List<LessonScheduleDto> lessons = new ArrayList<>();
-
         try {
             ScheduleParser scheduleParser = new ScheduleParser();
 
@@ -67,13 +64,14 @@ public class ScheduleParser {
             Elements scheduleElements = document.select("table.time-table");
 
             for (int i = 0; i < DAYS_IN_WEEK; i++) {
+                List<LessonScheduleDto> lessons = new ArrayList<>();
                 for (Element scheduleElement : scheduleElements) {
                     Elements rows = scheduleElement.select("tr");
                     for (Element row : rows) {
                         Elements cells = row.select("td");
 
                         if (cells.isEmpty()) {
-                            break;
+                            continue;
                         }
 
                         Element currentCell = cells.get(i + 1);
@@ -89,14 +87,10 @@ public class ScheduleParser {
                             LessonScheduleDto lessonScheduleDto = new LessonScheduleDto(null, subject, type, startTime, teacher, place, parity);
                             lessons.add(lessonScheduleDto);
                         }
-
                     }
                 }
-
                 days.add(new DayScheduleDto(lessons));
-                lessons.clear();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,8 +107,6 @@ public class ScheduleParser {
 
     public static WeekScheduleDto parseByRoom(String room) {
         List<DayScheduleDto> days = new ArrayList<>();
-        List<LessonScheduleDto> lessons = new ArrayList<>();
-
         try {
             ScheduleParser scheduleParser = new ScheduleParser();
 
@@ -123,13 +115,14 @@ public class ScheduleParser {
             Elements scheduleElements = document.select("table.time-table");
 
             for (int i = 0; i < DAYS_IN_WEEK; i++) {
+                List<LessonScheduleDto> lessons = new ArrayList<>();
                 for (Element scheduleElement : scheduleElements) {
                     Elements rows = scheduleElement.select("tr");
                     for (Element row : rows) {
                         Elements cells = row.select("td");
 
                         if (cells.isEmpty()) {
-                            break;
+                            continue;
                         }
 
                         Element currentCell = cells.get(i + 1);
@@ -148,9 +141,7 @@ public class ScheduleParser {
 
                     }
                 }
-
                 days.add(new DayScheduleDto(lessons));
-                lessons.clear();
             }
 
         } catch (Exception e) {

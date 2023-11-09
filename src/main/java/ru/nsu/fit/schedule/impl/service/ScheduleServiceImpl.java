@@ -10,8 +10,12 @@ import ru.nsu.fit.schedule.impl.data.PinnedScheduleRepository;
 import ru.nsu.fit.schedule.impl.domain.model.PinnedSchedule;
 import ru.nsu.fit.schedule.impl.domain.service.DomainScheduleService;
 import ru.nsu.fit.schedule.impl.domain.service.ScheduleParser;
+import ru.nsu.fit.student.impl.data.StudentLessonRepository;
 import ru.nsu.fit.student.impl.data.StudentRepository;
 import ru.nsu.fit.student.impl.domain.model.Student;
+import ru.nsu.fit.student.impl.domain.model.StudentLesson;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +23,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private DomainScheduleService domainScheduleService;
     private GroupRepository groupRepository;
     private StudentRepository studentRepository;
+    private StudentLessonRepository studentLessonRepository;
     private PinnedScheduleRepository pinnedScheduleRepository;
 
     @Override
@@ -35,9 +40,13 @@ public class ScheduleServiceImpl implements ScheduleService {
     public WeekScheduleDto getPinnedSchedule(Long studentId) {
         PinnedSchedule pinnedSchedule = pinnedScheduleRepository.findByStudentId(studentId).orElseThrow();
         Group group = pinnedSchedule.getGroup();
-        return getScheduleByGroup(group.getNumber());
-    }
 
+        WeekScheduleDto weekScheduleDto = getScheduleByGroup(group.getNumber());
+
+        List<StudentLesson> studentLessons = studentLessonRepository.findByStudentId(studentId);
+
+        return domainScheduleService.getScheduleWithStudentLessons(weekScheduleDto, studentLessons);
+    }
 
     @Override
     public void pinSchedule(Long studentId, String groupNumber) {
