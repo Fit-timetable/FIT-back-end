@@ -45,7 +45,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         List<StudentLesson> studentLessons = studentLessonRepository.findByStudentId(studentId);
 
-        return ScheduleParser.parseStudentAddedLessons(weekScheduleDto, studentLessons);
+        return domainScheduleService.getScheduleWithStudentLessons(weekScheduleDto, studentLessons);
     }
 
     @Override
