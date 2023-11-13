@@ -3,13 +3,20 @@ package ru.nsu.fit.lesson.impl.service;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import ru.nsu.fit.homework.api.HomeworkService;
+import ru.nsu.fit.homework.api.dto.HomeworkResponseDto;
 import ru.nsu.fit.lesson.api.LessonForm;
 import ru.nsu.fit.lesson.api.LessonService;
 import ru.nsu.fit.lesson.api.dto.EditLessonDto;
+import ru.nsu.fit.lesson.api.dto.LessonDetailsDto;
 import ru.nsu.fit.lesson.impl.data.CanceledLessonRepository;
 import ru.nsu.fit.lesson.impl.data.LessonRepository;
 import ru.nsu.fit.lesson.impl.domain.model.entities.Lesson;
 import ru.nsu.fit.lesson.impl.domain.service.DomainLessonService;
+import ru.nsu.fit.lesson.impl.domain.service.LessonParser;
+import ru.nsu.fit.resource.api.dto.ResourceResponseDto;
+import ru.nsu.fit.resource.api.ResouceService;
 import ru.nsu.fit.student.api.StudentService;
 import ru.nsu.fit.student.impl.data.StudentLessonRepository;
 import ru.nsu.fit.student.impl.domain.model.StudentLesson;
@@ -28,6 +35,9 @@ public class LessonServiceImpl implements LessonService {
     private final CanceledLessonRepository canceledLessonRepository;
     private final SubjectService subjectService;
     private final StudentService studentService;
+    private HomeworkService homeworkService;
+    private ResouceService resourceService;
+    private LessonParser lessonParser;
 
     @Override
     public Lesson createLesson(LessonForm lessonForm) {
@@ -76,5 +86,14 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public void deleteLesson(Long id) {
         lessonRepository.deleteById(id);
+    }
+
+    @Override
+    public LessonDetailsDto getLessonDetails(Long id) {
+        Lesson lesson = lessonRepository.getReferenceById(id);
+        HomeworkResponseDto homeworkResponseDto = homeworkService.getNearestHomeworkResponseDtoByLessonId(id);
+        List<ResourceResponseDto> resources = resourceService.getResourcesDtoBySubjectId(lesson.getSubject().getId());
+        
+        return lessonParser.toLessonDetailsDTO(lesson, homeworkResponseDto, resources);
     }
 }

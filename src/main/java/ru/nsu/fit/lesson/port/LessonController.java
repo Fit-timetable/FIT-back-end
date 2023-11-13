@@ -8,8 +8,8 @@ import ru.nsu.fit.lesson.api.LessonForm;
 import ru.nsu.fit.lesson.api.LessonService;
 import ru.nsu.fit.lesson.api.dto.CancelLessonDto;
 import ru.nsu.fit.lesson.api.dto.EditLessonDto;
+import ru.nsu.fit.lesson.api.dto.LessonDetailsDto;
 import ru.nsu.fit.lesson.api.dto.LessonIdDto;
-
 import static ru.nsu.fit.lesson.port.LessonUrl.*;
 
 @RestController
@@ -42,5 +42,11 @@ public class LessonController {
     @DeleteMapping(LESSON_ID_URL)
     public void deleteLesson(@PathVariable Long id) {
         lessonService.deleteLesson(id);
+    }
+
+    @Operation(summary = "Получить занятие")
+    @GetMapping(ID_URL)
+    public LessonDetailsDto getLesson(@PathVariable Long id){
+        return lessonService.getLessonDetails(id);
     }
 }
