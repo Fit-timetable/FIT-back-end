@@ -11,6 +11,8 @@ import ru.nsu.fit.student.api.StudentService;
 import ru.nsu.fit.subject.api.SubjectService;
 import ru.nsu.fit.subject.impl.domain.model.Subject;
 
+import java.time.LocalDate;
+
 @Service
 @AllArgsConstructor
 public class LessonServiceImpl implements LessonService {
@@ -24,6 +26,34 @@ public class LessonServiceImpl implements LessonService {
         Lesson lesson = lessonRepository.save(DomainLessonService.mapping(lessonForm, subject));
 
         studentService.saveStudentLesson(DomainLessonService.mapping(lesson, studentService.getStudent(lessonForm.studentId())));
+
+        return lesson;
+    }
+
+    @Override
+    public Lesson cancelLesson(Long id, LocalDate localDate) {
+        Lesson lesson = lessonRepository.findById(id).orElseThrow();
+
+        if (lesson.getStartTime().toLocalDate().equals(localDate)) {
+            lessonRepository.delete(lesson);
+            return lesson;
+        }
+        return null;
+    }
+
+    @Override
+    public Lesson editLesson(Long id, Lesson lesson) {
+        Lesson existingLesson = lessonRepository.findById(id).orElseThrow();
+
+        lessonRepository.save(DomainLessonService.mapping(lesson, existingLesson));
+
+        return existingLesson;
+    }
+
+    @Override
+    public Lesson deleteLesson(Long id) {
+        Lesson lesson = lessonRepository.findById(id).orElseThrow();
+        lessonRepository.delete(lesson);
 
         return lesson;
     }
