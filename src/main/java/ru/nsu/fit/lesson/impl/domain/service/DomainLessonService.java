@@ -2,16 +2,14 @@ package ru.nsu.fit.lesson.impl.domain.service;
 
 import org.springframework.stereotype.Service;
 import ru.nsu.fit.lesson.api.LessonForm;
-import ru.nsu.fit.lesson.impl.domain.model.LessonParity;
-import ru.nsu.fit.lesson.impl.domain.model.LessonType;
+import ru.nsu.fit.lesson.api.dto.EditLessonDto;
+import ru.nsu.fit.lesson.impl.domain.model.entities.CanceledLesson;
 import ru.nsu.fit.lesson.impl.domain.model.entities.Lesson;
-import ru.nsu.fit.schedule.impl.domain.model.DayName;
 import ru.nsu.fit.student.impl.domain.model.Student;
 import ru.nsu.fit.student.impl.domain.model.StudentLesson;
 import ru.nsu.fit.subject.impl.domain.model.Subject;
 
-import java.time.LocalDateTime;
-import java.util.function.Consumer;
+import java.util.Date;
 
 @Service
 public class DomainLessonService {
@@ -30,18 +28,15 @@ public class DomainLessonService {
         return lesson;
     }
 
-    public static Lesson mapping(Lesson newLesson, Lesson existingLesson) {
-        updateField(newLesson.getDayName(), existingLesson::setDayName);
-        updateField(newLesson.getStartTime(), existingLesson::setStartTime);
-        updateField(newLesson.getRoom(), existingLesson::setRoom);
-        updateField(newLesson.getTeacher(), existingLesson::setTeacher);
-        updateField(newLesson.getMeetLink(), existingLesson::setMeetLink);
-        updateField(newLesson.getLessonType(), existingLesson::setLessonType);
-        updateField(newLesson.getLessonParity(), existingLesson::setLessonParity);
-        updateField(newLesson.getSubject(), existingLesson::setSubject);
-        updateField(newLesson.getGroup(), existingLesson::setGroup);
+    public static Lesson mapping(EditLessonDto newLesson, Lesson updatableLesson, Subject subject) {
+        updatableLesson.setSubject(subject);
+        updatableLesson.setStartTime(newLesson.date().startTime());
+        updatableLesson.setDayName(newLesson.date().weekDay());
+        updatableLesson.setTeacher(newLesson.teacher());
+        updatableLesson.setRoom(newLesson.place().room());
+        updatableLesson.setMeetLink(newLesson.place().meetLink());
 
-        return existingLesson;
+        return updatableLesson;
     }
 
     public static StudentLesson mapping(Lesson lesson, Student student){
@@ -53,9 +48,12 @@ public class DomainLessonService {
         return studentLesson;
     }
 
-    private static <T> void updateField(T newValue, Consumer<T> setter) {
-        if (newValue != null) {
-            setter.accept(newValue);
-        }
+    public static CanceledLesson mapping(Lesson lesson, Date date, StudentLesson studentLesson) {
+        CanceledLesson canceledLesson = new CanceledLesson();
+        canceledLesson.setStudentId(studentLesson.getStudent().getId());
+        canceledLesson.setLessonId(lesson.getId());
+        canceledLesson.setDate(date);
+
+        return canceledLesson;
     }
 }
