@@ -21,4 +21,10 @@ public class CanceledLesson {
     private Long lessonId;
     @Column(name = "date")
     private Date date;
+
+    public CanceledLesson(Long studentId, Long lessonId, Date date) {
+        this.studentId = studentId;
+        this.lessonId = lessonId;
+        this.date = date;
+    }
 }

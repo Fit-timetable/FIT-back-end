@@ -8,6 +8,7 @@ import ru.nsu.fit.lesson.api.LessonForm;
 import ru.nsu.fit.lesson.api.LessonService;
 import ru.nsu.fit.lesson.api.dto.CancelLessonDto;
 import ru.nsu.fit.lesson.api.dto.EditLessonDto;
+import ru.nsu.fit.lesson.api.dto.LessonIdDto;
 
 import static ru.nsu.fit.lesson.port.LessonUrl.*;
 
@@ -21,8 +22,8 @@ public class LessonController {
 
     @Operation(summary = "Добавить новое занятие")
     @PostMapping()
-    public Long createLesson(@RequestBody LessonForm lesson) {
-        return lessonService.createLesson(lesson).getId();
+    public LessonIdDto createLesson(@RequestBody LessonForm lesson) {
+        return new LessonIdDto(lessonService.createLesson(lesson).getId());
     }
 
     @Operation(summary = "Отменить занятие на определенную дату")

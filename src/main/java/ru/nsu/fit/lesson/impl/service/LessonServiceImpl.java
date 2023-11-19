@@ -23,16 +23,24 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 public class LessonServiceImpl implements LessonService {
-    private LessonRepository lessonRepository;
-    private StudentLessonRepository studentLessonRepository;
-    private CanceledLessonRepository canceledLessonRepository;
-    private SubjectService subjectService;
-    private StudentService studentService;
+    private final LessonRepository lessonRepository;
+    private final StudentLessonRepository studentLessonRepository;
+    private final CanceledLessonRepository canceledLessonRepository;
+    private final SubjectService subjectService;
+    private final StudentService studentService;
 
     @Override
     public Lesson createLesson(LessonForm lessonForm) {
         Subject subject = subjectService.getSubject(lessonForm.subjectId());
-        Lesson lesson = lessonRepository.save(DomainLessonService.mapping(lessonForm, subject));
+        Lesson lesson = lessonRepository.save(DomainLessonService.mapping(
+                lessonForm.date().startTime(),
+                lessonForm.date().weekDay(),
+                lessonForm.place().room(),
+                lessonForm.place().meetLink(),
+                lessonForm.type(),
+                lessonForm.parity(),
+                subject)
+        );
 
         studentService.saveStudentLesson(DomainLessonService.mapping(lesson, studentService.getStudent(lessonForm.studentId())));
 
@@ -54,7 +62,15 @@ public class LessonServiceImpl implements LessonService {
         Subject subject = subjectService.getSubject(editLessonDto.subjectId());
         Lesson existingLesson = lessonRepository.findById(id).orElseThrow();
 
-        lessonRepository.save(DomainLessonService.mapping(editLessonDto, existingLesson, subject));
+        lessonRepository.save(DomainLessonService.mapping(
+                editLessonDto.date().startTime(),
+                editLessonDto.date().weekDay(),
+                editLessonDto.teacher(),
+                editLessonDto.place().room(),
+                editLessonDto.place().meetLink(),
+                existingLesson,
+                subject)
+        );
     }
 
     @Override
