@@ -44,4 +44,26 @@ public class Lesson {
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;
+
+    public Lesson(Subject subject, LocalDateTime startTime, DayName dayName, String room, String meetLink, LessonType lessonType,
+                  LessonParity lessonParity) {
+        this.subject = subject;
+        this.startTime = startTime;
+        this.dayName = dayName;
+        this.room = room;
+        this.meetLink = meetLink;
+        this.lessonType = lessonType;
+        this.lessonParity = lessonParity;
+
+    }
+
+    public void update(Subject subject, LocalDateTime startTime, DayName dayName,
+                       String teacher, String room, String meetLink) {
+        this.subject = subject;
+        this.startTime = startTime;
+        this.dayName = dayName;
+        this.teacher = teacher;
+        this.room = room;
+        this.meetLink = meetLink;
+    }
 }
