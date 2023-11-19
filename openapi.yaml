@@ -882,8 +882,7 @@ components:
           type: string
           example: 'Операционные системы'
         type:
-          type: string
-          enum: [LECTURE, SEMINAR, PRACTICE]
+          $ref: '#/components/schemas/LessonType'
         startTime:
           type: string
           format: time
@@ -905,8 +904,7 @@ components:
           type: integer
           example: 1
         type:
-          type: string
-          enum: [LECTURE, SEMINAR, PRACTICE]
+          $ref: '#/components/schemas/LessonType'
         date:
           $ref: '#/components/schemas/LessonDate'
         place:
@@ -914,6 +912,9 @@ components:
         parity:
           type: string
           enum: [EVEN, ODD, ALWAYS]
+    LessonType:
+      type: string
+      enum: [LECTURE, SEMINAR, PRACTICE, OPENING]
     LessonDate:
       type: object
       properties:
