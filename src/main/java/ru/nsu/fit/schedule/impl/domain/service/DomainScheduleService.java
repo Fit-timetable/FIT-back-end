@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 public class DomainScheduleService {
-    private static final int CORRECT_DATE_FORMAT_LEN = 5;
+    public static final int CORRECT_DATE_FORMAT_LEN = 5;
 
     public PinnedSchedule createPinnedSchedule(Group group, Student student) {
         PinnedSchedule pinnedSchedule = new PinnedSchedule();
@@ -35,6 +35,7 @@ public class DomainScheduleService {
                 lesson.getSubject().getName(),
                 lesson.getLessonType(),
                 startTime,
+                ScheduleParser.getFinishTime(startTime),
                 lesson.getTeacher(),
                 new LessonPlace(lesson.getRoom(), lesson.getMeetLink()),
                 lesson.getLessonParity()
