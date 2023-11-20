@@ -18,4 +18,9 @@ public class Student {
     private String email;
     @Column(nullable = false)
     private String password;
+
+    public Student(String email, String password){
+        this.email = email;
+        this.password = password;
+    }
 }

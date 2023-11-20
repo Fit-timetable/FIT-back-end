@@ -1,22 +1,29 @@
 package ru.nsu.fit.email.impl.service;
 
 import java.util.Random;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import ru.nsu.fit.email.api.RequestSignupService;
+import ru.nsu.fit.email.impl.data.ConfirmCodeQueryRepository;
+import ru.nsu.fit.email.impl.domain.model.entities.ConfirmCodeQuery;
 
 @Service
 @AllArgsConstructor
 public class RequestSignupServiceImpl implements RequestSignupService{
     private EmailService emailService;
+    private final ConfirmCodeQueryRepository confirmCodeQueryRepository;
 
     @Override
     public void sendConfirmMessage(String email) {
         String confirmCode = generateConfirmCode();
         String subject = "CONFIRM EMAIL";
         emailService.sendMail(email, subject, confirmCode);
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        createConfirmCodeQuery(email, confirmCode, currentTime);
     }
 
     @Override
@@ -29,5 +36,11 @@ public class RequestSignupServiceImpl implements RequestSignupService{
         }
 
         return confirmCode.toString();
+    }
+
+    @Override
+    public void createConfirmCodeQuery(String email, String code, LocalDateTime expirationDate) {
+        ConfirmCodeQuery confirmCodeQuery = new ConfirmCodeQuery(email, code, expirationDate);
+        confirmCodeQueryRepository.save(confirmCodeQuery);
     }   
 }
