@@ -1,5 +1,5 @@
 package ru.nsu.fit.email.port;
 
 public interface EmailUrl {
-    String RequestSignup_URL = "/request-signup";
+    String REQUEST_SIGNUP = "/request-signup";
 }

@@ -1,6 +1,6 @@
 package ru.nsu.fit.email.port;
 
-import static ru.nsu.fit.email.port.EmailUrl.RequestSignup_URL;
+import static ru.nsu.fit.email.port.EmailUrl.REQUEST_SIGNUP;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,13 +17,13 @@ import ru.nsu.fit.email.api.dto.EmailDTO;
 @RestController
 @AllArgsConstructor
 @Tag(name="Отправка писем")
-@RequestMapping(RequestSignup_URL)
+@RequestMapping(REQUEST_SIGNUP)
 public class EmailController {
     private final RequestSignupService requestSignupService ;
 
     @Operation(summary = "Отправка подтверждающего письма")
     @PostMapping()
     public void sendConfirmMessage(@RequestBody EmailDTO email) {
-        requestSignupService.sendConfirmMessage(email.to());
+        requestSignupService.sendConfirmMessage(email.email());
     }
 }
