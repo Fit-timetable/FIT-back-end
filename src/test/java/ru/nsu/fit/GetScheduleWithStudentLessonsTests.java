@@ -70,39 +70,39 @@ public class GetScheduleWithStudentLessonsTests {
     public static WeekScheduleDto createWeekScheduleDto() {
         return new WeekScheduleDto(
                 new DayScheduleDto(listOf(
-                        new LessonScheduleDto(null, "Subject1", LessonType.LECTURE, "09:00", "Ivanov",
+                        new LessonScheduleDto(null, "Subject1", LessonType.LECTURE, "09:00", "10:35","Ivanov",
                                 new LessonPlace("1111", "meetLink"), LessonParity.EVEN),
-                        new LessonScheduleDto(null, "Subject3", LessonType.LECTURE, "09:00", "Sidorov",
+                        new LessonScheduleDto(null, "Subject3", LessonType.LECTURE, "09:00", "10:35","Sidorov",
                                 new LessonPlace("3333", "meetLink"), LessonParity.ALWAYS))
                 ),
                 new DayScheduleDto(listOf(
-                        new LessonScheduleDto(null, "Subject1", LessonType.SEMINAR, "09:00", "Ivanov",
+                        new LessonScheduleDto(null, "Subject1", LessonType.SEMINAR, "09:00", "10:35","Ivanov",
                                 new LessonPlace("1111", null), LessonParity.ODD),
-                        new LessonScheduleDto(null, "Subject3", LessonType.SEMINAR, "10:50", "Sidorov",
+                        new LessonScheduleDto(null, "Subject3", LessonType.SEMINAR, "10:50", "12:25","Sidorov",
                                 new LessonPlace("3333", null), LessonParity.EVEN))
                 ),
                 new DayScheduleDto(listOf(
-                        new LessonScheduleDto(null, "Subject1", LessonType.LABORATORY, "12:40", "Ivanov",
+                        new LessonScheduleDto(null, "Subject1", LessonType.LABORATORY, "12:40", "14:15","Ivanov",
                                 new LessonPlace("1111", null), LessonParity.ALWAYS),
-                        new LessonScheduleDto(null, "Subject3", LessonType.LABORATORY, "18:10", "Sidorov",
+                        new LessonScheduleDto(null, "Subject3", LessonType.LABORATORY, "18:10", "19:45", "Sidorov",
                                 new LessonPlace("3333", null), LessonParity.ALWAYS))
                 ),
                 new DayScheduleDto(listOf(
-                        new LessonScheduleDto(null, "Subject2", LessonType.LECTURE, "12:40", "Petrov",
+                        new LessonScheduleDto(null, "Subject2", LessonType.LECTURE, "12:40", "14:15","Petrov",
                                 new LessonPlace("2222", "meetLink"), LessonParity.EVEN),
-                        new LessonScheduleDto(null, "Subject4", LessonType.LECTURE, "20:00", "Alexandrov",
+                        new LessonScheduleDto(null, "Subject4", LessonType.LECTURE, "20:00", "21:35","Alexandrov",
                                 new LessonPlace("4444", "meetLink"), LessonParity.EVEN))
                 ),
                 new DayScheduleDto(listOf(
-                        new LessonScheduleDto(null, "Subject2", LessonType.SEMINAR, "14:30", "Petrov",
+                        new LessonScheduleDto(null, "Subject2", LessonType.SEMINAR, "14:30", "16:05","Petrov",
                                 new LessonPlace("2222", null), LessonParity.ODD),
-                        new LessonScheduleDto(null, "Subject4", LessonType.SEMINAR, "14:30", "Alexandrov",
+                        new LessonScheduleDto(null, "Subject4", LessonType.SEMINAR, "14:30", "16:05","Alexandrov",
                                 new LessonPlace("4444", null), LessonParity.ODD))
                 ),
                 new DayScheduleDto(listOf(
-                        new LessonScheduleDto(null, "Subject2", LessonType.LABORATORY, "14:30", "Petrov",
+                        new LessonScheduleDto(null, "Subject2", LessonType.LABORATORY, "14:30", "16:05","Petrov",
                                 new LessonPlace("2222", null), LessonParity.ALWAYS),
-                        new LessonScheduleDto(null, "Subject4", LessonType.LABORATORY, "16:20", "Alexandrov",
+                        new LessonScheduleDto(null, "Subject4", LessonType.LABORATORY, "16:20", "17:55","Alexandrov",
                                 new LessonPlace("4444", null), LessonParity.ALWAYS))
                 )
         );

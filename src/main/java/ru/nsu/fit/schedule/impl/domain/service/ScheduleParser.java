@@ -24,15 +24,15 @@ import java.util.List;
 public class ScheduleParser {
     private static final int DAYS_IN_WEEK = 6;
 
-    private String checkNullable(Element element) {
+    private static String checkNullable(Element element) {
         return (element != null) ? element.text() : "";
     }
 
-    private String getElementText(Elements elements, int k) {
+    private static String getElementText(Elements elements, int k) {
         return checkNullable(elements.size() > k ? elements.get(k) : null);
     }
 
-    private LessonParity getLessonParity(String lessonParity) {
+    private static LessonParity getLessonParity(String lessonParity) {
         return switch (lessonParity) {
             case "Четная" -> LessonParity.EVEN;
             case "Нечетная" -> LessonParity.ODD;
@@ -41,7 +41,7 @@ public class ScheduleParser {
         };
     }
 
-    private LessonType getLessonType(String lessonType) {
+    private static LessonType getLessonType(String lessonType) {
         return switch (lessonType) {
             case "лек" -> LessonType.LECTURE;
             case "пр" -> LessonType.SEMINAR;
@@ -50,7 +50,7 @@ public class ScheduleParser {
         };
     }
 
-    private String getTime(Element timeElement) {
+    private static String getTime(Element timeElement) {
         return timeElement != null ? timeElement.text() : null;
     }
 
@@ -83,19 +83,18 @@ public class ScheduleParser {
     }
 
     private static LessonScheduleDto createLessonScheduleDto(
-            ScheduleParser scheduleParser,
             Element currentCell,
             String startTime,
             String finishTime,
             String room,
             int k
     ) {
-        String subject = scheduleParser.getElementText(currentCell.select(".subject"), k);
-        LessonType type = scheduleParser.getLessonType(scheduleParser.getElementText(currentCell.select(".type"), k));
-        String teacher = scheduleParser.getElementText(currentCell.select(".tutor"), k);
+        String subject = getElementText(currentCell.select(".subject"), k);
+        LessonType type = getLessonType(getElementText(currentCell.select(".type"), k));
+        String teacher = getElementText(currentCell.select(".tutor"), k);
         LessonPlace place = (room != null) ? new LessonPlace(room, null) :
-                new LessonPlace(scheduleParser.getElementText(currentCell.select(".room"), k), null);
-        LessonParity parity = scheduleParser.getLessonParity(scheduleParser.getElementText(currentCell.select(".week"), k));
+                new LessonPlace(getElementText(currentCell.select(".room"), k), null);
+        LessonParity parity = getLessonParity(getElementText(currentCell.select(".week"), k));
 
         return new LessonScheduleDto(null, subject, type, startTime, finishTime, teacher, place, parity);
     }
@@ -103,8 +102,6 @@ public class ScheduleParser {
     private static WeekScheduleDto parseSchedule(String room, String url) {
         List<DayScheduleDto> days = new ArrayList<>();
         try {
-            ScheduleParser scheduleParser = new ScheduleParser();
-
             Document document = Jsoup.connect(url).get();
 
             Elements scheduleElements = document.select("table.time-table");
@@ -121,7 +118,7 @@ public class ScheduleParser {
                             continue;
                         }
 
-                        String startTime = scheduleParser.getTime(cells.first());
+                        String startTime = getTime(cells.first());
                         assert startTime != null;
                         String finishTime = DomainScheduleService.getFinishTime(startTime);
 
@@ -130,10 +127,11 @@ public class ScheduleParser {
                         storeOpeningLessonScheduleDtoTemporarily(currentCell, openingLessons, startTime, finishTime);
 
                         for (int k = 0; k < currentCell.select(".subject").size(); k++) {
-                            lessons.addAll(openingLessons);
-                            lessons.add(createLessonScheduleDto(scheduleParser, currentCell, startTime, finishTime, room, k));
-
-                            openingLessons = new ArrayList<>();
+                            if (k == 0) {
+                                lessons.addAll(openingLessons);
+                                openingLessons = new ArrayList<>();
+                            }
+                            lessons.add(createLessonScheduleDto(currentCell, startTime, finishTime, room, k));
                         }
                     }
                 }
