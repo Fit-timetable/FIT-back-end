@@ -23,7 +23,9 @@ public class RequestSignupServiceImpl implements RequestSignupService{
         emailService.sendMail(email, subject, confirmCode);
 
         LocalDateTime currentTime = LocalDateTime.now();
-        createConfirmCodeQuery(email, confirmCode, currentTime);
+        LocalDateTime futureTime = currentTime.plusMinutes(5);
+
+        createConfirmCodeQuery(email, confirmCode, futureTime);
     }
 
     @Override
