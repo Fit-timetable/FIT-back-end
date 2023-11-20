@@ -23,4 +23,10 @@ public class StudentLesson {
     private Lesson lesson;
     @Column(name = "is_visited", nullable = false)
     private Boolean visited;
+
+    public StudentLesson(Lesson lesson, Student student, Boolean visited) {
+        this.lesson = lesson;
+        this.student = student;
+        this.visited = visited;
+    }
 }

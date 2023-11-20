@@ -1,4 +1,4 @@
-package ru.nsu.fit.config;
+package ru.nsu.fit.email.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
