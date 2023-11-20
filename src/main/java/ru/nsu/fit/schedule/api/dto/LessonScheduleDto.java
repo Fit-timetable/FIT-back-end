@@ -12,6 +12,7 @@ public record LessonScheduleDto(
     @Schema(description = "Предмет") String subject,
     @Schema(description = "Тип занятия") LessonType type,
     @Schema(description = "Время начала занятия в формате ЧЧ:ММ") String startTime,
+    @Schema(description = "Время конца занятия в формате ЧЧ:ММ") String finishTime,
     @Schema(description = "Фамилия и инциалы преподавателя который ведет занятие")
     String teacher,
     @Schema(description = "Место проведения") LessonPlace place,
