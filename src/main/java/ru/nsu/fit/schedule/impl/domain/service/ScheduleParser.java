@@ -45,7 +45,7 @@ public class ScheduleParser {
         return switch (lessonType) {
             case "лек" -> LessonType.LECTURE;
             case "пр" -> LessonType.SEMINAR;
-            case "лаб" -> LessonType.LABORATORY;
+            case "лаб" -> LessonType.PRACTICE;
             default -> null;
         };
     }

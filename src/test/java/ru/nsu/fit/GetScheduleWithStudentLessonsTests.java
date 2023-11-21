@@ -82,9 +82,9 @@ public class GetScheduleWithStudentLessonsTests {
                                 new LessonPlace("3333", null), LessonParity.EVEN))
                 ),
                 new DayScheduleDto(listOf(
-                        new LessonScheduleDto(null, "Subject1", LessonType.LABORATORY, "12:40", "14:15","Ivanov",
+                        new LessonScheduleDto(null, "Subject1", LessonType.PRACTICE, "12:40", "14:15","Ivanov",
                                 new LessonPlace("1111", null), LessonParity.ALWAYS),
-                        new LessonScheduleDto(null, "Subject3", LessonType.LABORATORY, "18:10", "19:45", "Sidorov",
+                        new LessonScheduleDto(null, "Subject3", LessonType.PRACTICE, "18:10", "19:45", "Sidorov",
                                 new LessonPlace("3333", null), LessonParity.ALWAYS))
                 ),
                 new DayScheduleDto(listOf(
@@ -100,9 +100,9 @@ public class GetScheduleWithStudentLessonsTests {
                                 new LessonPlace("4444", null), LessonParity.ODD))
                 ),
                 new DayScheduleDto(listOf(
-                        new LessonScheduleDto(null, "Subject2", LessonType.LABORATORY, "14:30", "16:05","Petrov",
+                        new LessonScheduleDto(null, "Subject2", LessonType.PRACTICE, "14:30", "16:05","Petrov",
                                 new LessonPlace("2222", null), LessonParity.ALWAYS),
-                        new LessonScheduleDto(null, "Subject4", LessonType.LABORATORY, "16:20", "17:55","Alexandrov",
+                        new LessonScheduleDto(null, "Subject4", LessonType.PRACTICE, "16:20", "17:55","Alexandrov",
                                 new LessonPlace("4444", null), LessonParity.ALWAYS))
                 )
         );
