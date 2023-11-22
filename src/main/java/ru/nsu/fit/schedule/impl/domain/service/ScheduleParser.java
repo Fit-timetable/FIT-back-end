@@ -41,11 +41,18 @@ public class ScheduleParser {
         };
     }
 
-    private static LessonType getLessonType(String lessonType) {
+    private static LessonType getLessonType(String lessonType, String room) {
         return switch (lessonType) {
-            case "лек" -> LessonType.LECTURE;
-            case "пр" -> LessonType.SEMINAR;
-            case "лаб" -> LessonType.LABORATORY;
+            case "ф, лек", "лек" -> LessonType.LECTURE;
+            case "ф, пр", "лаб" -> LessonType.SEMINAR;
+            case "пр"-> {
+                if (room.equals("Ауд. Базы практик ФИТ")) {
+                    yield LessonType.PRACTICE;
+                } else {
+                    yield LessonType.SEMINAR;
+                }
+            }
+
             default -> null;
         };
     }
@@ -89,11 +96,13 @@ public class ScheduleParser {
             String room,
             int k
     ) {
+        room = (room == null) ? getElementText(currentCell.select(".room"), k) : room;
+
         String subject = getElementText(currentCell.select(".subject"), k);
-        LessonType type = getLessonType(getElementText(currentCell.select(".type"), k));
+        LessonType type = getLessonType(getElementText(currentCell.select(".type"), k), room);
         String teacher = getElementText(currentCell.select(".tutor"), k);
-        LessonPlace place = (room != null) ? new LessonPlace(room, null) :
-                new LessonPlace(getElementText(currentCell.select(".room"), k), null);
+        LessonPlace place = new LessonPlace(room, null);
+
         LessonParity parity = getLessonParity(getElementText(currentCell.select(".week"), k));
 
         return new LessonScheduleDto(null, subject, type, startTime, finishTime, teacher, place, parity);
