@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.nsu.fit.homework.impl.domain.model.HomeworkFile;
 
+import java.util.Optional;
+
 @Repository
 public interface HomeworkFileRepository extends JpaRepository<HomeworkFile, Long> {
     Optional<HomeworkFile> findHomeworkFileByHomeworkId(Long id);

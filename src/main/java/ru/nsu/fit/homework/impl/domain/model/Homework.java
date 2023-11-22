@@ -2,6 +2,7 @@ package ru.nsu.fit.homework.impl.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import java.time.ZonedDateTime;
 import java.time.Duration;
@@ -50,6 +51,4 @@ public class Homework {
     public Duration getEstimatedTime(){
         return estimatedTime;
     }
-
-
 }

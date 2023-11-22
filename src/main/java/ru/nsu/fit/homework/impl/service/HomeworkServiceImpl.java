@@ -11,7 +11,6 @@ import ru.nsu.fit.homework.impl.data.HomeworkRepository;
 import ru.nsu.fit.homework.impl.domain.model.Homework;
 import ru.nsu.fit.homework.impl.domain.model.HomeworkFile;
 import ru.nsu.fit.homework.impl.domain.service.HomeworkDomainService;
-import ru.nsu.fit.homework.impl.domain.service.HomeworkDomainService;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -32,7 +31,7 @@ public class HomeworkServiceImpl implements HomeworkService{
         Duration minDuration = Duration.between(now, homeworks.get(0).getDeadline());
         for (Homework homework : homeworks) {
             Duration duration = Duration.between(now, homework.getDeadline());
-            if (duration.compareTo(minDuration) < 0) {
+            if (duration.compareTo(minDuration) <= 0) {
                 minDuration = duration;
                 closestHomework = homework;
             }

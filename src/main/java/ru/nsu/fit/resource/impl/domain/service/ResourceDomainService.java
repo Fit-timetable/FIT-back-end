@@ -16,8 +16,9 @@ public class ResourceDomainService {
     public List<ResourceResponseDto> toResourceResponseDtoList(List<Resource> resources,List<String> materials){
         List<ResourceResponseDto> resourceResponseDtoList = new ArrayList<>(resources.size());
         int index = 0;
-        
+
         for (Resource resource: resources){
+
             resourceResponseDtoList.add(new ResourceResponseDto(resource.getId(),
                     resource.getName(),
                     resource.getDescription(),

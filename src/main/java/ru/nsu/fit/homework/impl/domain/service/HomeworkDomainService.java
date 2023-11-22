@@ -7,6 +7,8 @@ import ru.nsu.fit.homework.api.dto.HomeworkResponseDto;
 import ru.nsu.fit.homework.impl.domain.model.Homework;
 import ru.nsu.fit.homework.impl.domain.model.HomeworkFile;
 
+import java.util.Optional;
+
 @Component
 @Getter
 @AllArgsConstructor
@@ -24,7 +26,8 @@ public class HomeworkDomainService {
                 homeworkFile.getFileDriveUri(),
                 isShared,
                 notificationPeriod,
-                (int) homework.getDaysBeforeDeadlineReminder()
+                homework.getDaysBeforeDeadlineReminder()
                 );
     }
+
 }

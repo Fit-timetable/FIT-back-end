@@ -9,6 +9,6 @@ public record HomeworkResponseDto(
         String file,
         Boolean isGroupShared,
         Integer notificationPeriod,
-        Integer notificationDaysBeforeDeadline
+        Short notificationDaysBeforeDeadline
 ) {
 }

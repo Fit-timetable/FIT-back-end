@@ -10,7 +10,6 @@ import ru.nsu.fit.resource.impl.data.ResourceLinkMaterialRepository;
 import ru.nsu.fit.resource.impl.data.ResourceRepository;
 import ru.nsu.fit.resource.impl.domain.model.Resource;
 import ru.nsu.fit.resource.impl.domain.service.ResourceDomainService;
-
 import java.util.ArrayList;
 import java.util.List;
 
