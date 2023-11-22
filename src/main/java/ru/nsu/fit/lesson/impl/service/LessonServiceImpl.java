@@ -18,6 +18,7 @@ import ru.nsu.fit.subject.api.SubjectService;
 import ru.nsu.fit.subject.impl.domain.model.Subject;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -41,9 +42,12 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public LessonDetailsDto getLesson(Long id) {
-        Lesson lesson = lessonRepository.getReferenceById(id);
-        HomeworkResponseDto homeworkResponseDto = homeworkService.getHomeworkResponseDtoByLessonId(id);
-        List<ResourceResponseDto> resources = resourceService.getResourcesDtoBySubjectId(lesson.getSubject().getId());
-        return lessonParser.toLessonDetailsDTO(lesson, homeworkResponseDto, resources);
+        Optional<Lesson> lesson = lessonRepository.getLessonById(id);
+        if (lesson.isPresent()) {
+            HomeworkResponseDto homeworkResponseDto = homeworkService.getHomeworkResponseDtoByLessonId(id);
+            List<ResourceResponseDto> resources = resourceService.getResourcesDtoBySubjectId(lesson.get().getSubject().getId());
+            return lessonParser.toLessonDetailsDTO(lesson.get(), homeworkResponseDto, resources);
+        }
+        return null;
     }
 }

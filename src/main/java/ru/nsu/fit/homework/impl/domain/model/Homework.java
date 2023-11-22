@@ -2,7 +2,9 @@ package ru.nsu.fit.homework.impl.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
+import java.time.Duration;
 import java.time.Instant;
 
 @Entity
@@ -29,6 +31,13 @@ public class Homework {
     private Short daysBeforeDeadlineReminder;
 
     @Column(name = "estimated_time", nullable = false)
-    private String estimatedTime;
+    @Type(value = Interval.class)
+    private Duration estimatedTime;
 
+    @Column(name = "homework_text", nullable = false)
+    private String homeworkText;
+
+    @Column(name = "notification_period")
+    @Type(value = Interval.class)
+    private Duration notificationPeriod;
 }

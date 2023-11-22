@@ -4,7 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.nsu.fit.resource.impl.domain.model.ResourceDriveMaterial;
 
+import java.util.Optional;
+
 @Repository
 public interface ResourceDriveMaterialRepository extends JpaRepository<ResourceDriveMaterial, Long> {
-    ResourceDriveMaterial findByResourceId(Long id);
+    Optional<ResourceDriveMaterial> findByResourceId(Long id);
 }

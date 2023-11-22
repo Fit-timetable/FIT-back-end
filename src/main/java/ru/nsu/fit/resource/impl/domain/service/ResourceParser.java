@@ -16,12 +16,17 @@ public class ResourceParser {
     public List<ResourceResponseDto> toResourceResponseDtoList(List<Resource> resources,List<String> materials){
         List<ResourceResponseDto> resourceResponseDtoList = new ArrayList<>(resources.size());
         int index = 0;
+
         for (Resource resource: resources){
+            String deletionTime = null;
+            if (resource.getDeletionDate() != null){
+                deletionTime = resource.getDeletionDate().toString();
+            }
             resourceResponseDtoList.add(new ResourceResponseDto(resource.getId(),
                     resource.getName(),
                     resource.getDescription(),
                     resource.getStatus(),
-                    resource.getDeletionDate().toString(),
+                    deletionTime,
                     materials.get(index)));
             index++;
         }

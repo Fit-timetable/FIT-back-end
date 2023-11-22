@@ -7,10 +7,13 @@ import ru.nsu.fit.resource.impl.data.ResourceDriveMaterialRepository;
 import ru.nsu.fit.resource.impl.data.ResourceLinkMaterialRepository;
 import ru.nsu.fit.resource.impl.data.ResourceRepository;
 import ru.nsu.fit.resource.impl.domain.model.Resource;
+import ru.nsu.fit.resource.impl.domain.model.ResourceDriveMaterial;
+import ru.nsu.fit.resource.impl.domain.model.ResourceLinkMaterial;
 import ru.nsu.fit.resource.impl.domain.service.ResourceParser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -28,13 +31,14 @@ public class ResourceService {
         List<Long> materialsId = resources.stream().map(Resource::getId).toList();
         List<String> materials = new ArrayList<>();
         for (Long id : materialsId) {
-            String newMaterial;
-            if ((newMaterial = resourceLinkMaterialRepository.findByResourceId(id).getLink()) != null) {
-                materials.add(newMaterial);
-            } else if ((newMaterial = resourceDriveMaterialRepository.findByResourceId(id).getFileDriveUri()) != null) {
-                materials.add(newMaterial);
+            Optional<ResourceLinkMaterial> link = resourceLinkMaterialRepository.findByResourceId(id);
+            Optional<ResourceDriveMaterial> drive = resourceDriveMaterialRepository.findByResourceId(id);
+            if (link.isPresent()) {
+                materials.add(link.get().getLink());
+            } else if (drive.isPresent()) {
+                materials.add(drive.get().getFileDriveUri());
             } else {
-                materials.add(newMaterial);
+                materials.add(null);
             }
         }
         return materials;
@@ -42,7 +46,10 @@ public class ResourceService {
 
     public List<ResourceResponseDto> getResourcesDtoBySubjectId(Long id) {
         List<Resource> resources = getResourcesBySubjectId(id);
-        List<String> resourcesMaterial = getResourcesMaterial(resources);
-        return resourceParser.toResourceResponseDtoList(resources, resourcesMaterial);
+        if (resources != null) {
+            List<String> resourcesMaterial = getResourcesMaterial(resources);
+            return resourceParser.toResourceResponseDtoList(resources, resourcesMaterial);
+        }
+        return null;
     }
 }

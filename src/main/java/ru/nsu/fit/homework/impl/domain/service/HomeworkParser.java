@@ -7,27 +7,28 @@ import ru.nsu.fit.homework.api.dto.HomeworkResponseDto;
 import ru.nsu.fit.homework.impl.domain.model.Homework;
 import ru.nsu.fit.homework.impl.domain.model.HomeworkFile;
 
+import java.util.Optional;
+
 @Component
 @Getter
 @AllArgsConstructor
 public class HomeworkParser {
-    public HomeworkResponseDto toHomeworkResponseDto(Homework homework, HomeworkFile homeworkFile, Boolean isShared){
-        //крч text и notificationPriod должны хранится в бд
-        //надо добавить эти атрибуты в таблицу
-        //ну и etity изменить, я пока заглушки поставил
-        //и еще с последним параметром какую то чушь сделал, можно было умнее но времени нет сори
-        String homeworkText = "adsf";
-        Integer notificationPeriod = 0;
+    public HomeworkResponseDto toHomeworkResponseDto(Homework homework, Optional<HomeworkFile> homeworkFile, Boolean isShared){
+        Integer notificationPeriodSeconds = null;
+        if (homework.getNotificationPeriod() != null){
+            notificationPeriodSeconds = (int) homework.getNotificationPeriod().toSeconds();
+        }
         return new HomeworkResponseDto(
                 homework.getId(),
                 homework.getStudentId(),
                 homework.getDeadline().toString(),
-                homeworkText,
-                Integer.parseInt(homework.getEstimatedTime()),
-                homeworkFile.getFileDriveUri(),
+                homework.getHomeworkText(),
+                (int) homework.getEstimatedTime().toSeconds(),
+                homeworkFile.map(HomeworkFile::getFileDriveUri).orElse(null),
                 isShared,
-                notificationPeriod,
-                Integer.parseInt(String.valueOf(homework.getDaysBeforeDeadlineReminder()))
+                notificationPeriodSeconds,
+                homework.getDaysBeforeDeadlineReminder()
                 );
     }
+
 }

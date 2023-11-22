@@ -10,9 +10,11 @@ import ru.nsu.fit.homework.impl.domain.model.Homework;
 import ru.nsu.fit.homework.impl.domain.model.HomeworkFile;
 import ru.nsu.fit.homework.impl.domain.service.HomeworkParser;
 
+import javax.swing.text.html.Option;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +31,7 @@ public class HomeworkService {
         Duration minDuration = Duration.between(now, homeworks.get(0).getDeadline());
         for (Homework homework : homeworks) {
             Duration duration = Duration.between(now, homework.getDeadline());
-            if (duration.compareTo(minDuration) < 0) {
+            if (duration.compareTo(minDuration) <= 0) {
                 minDuration = duration;
                 closestHomework = homework;
             }
@@ -37,7 +39,7 @@ public class HomeworkService {
         return closestHomework;
     }
 
-    public HomeworkFile getFileForHomework(Long id) {
+    public Optional<HomeworkFile> getFileForHomework(Long id) {
         return homeworkFileRepository.findHomeworkFileByHomeworkId(id);
     }
 
@@ -46,9 +48,12 @@ public class HomeworkService {
     }
 
     public HomeworkResponseDto getHomeworkResponseDtoByLessonId(Long id){
-        Homework homework = getNearestHomeworkForLesson(id);
-        HomeworkFile homeworkFile = getFileForHomework(homework.getId());
-        Boolean isShared = isHomeworkShared(homework.getId());
-        return homeworkParser.toHomeworkResponseDto(homework, homeworkFile, isShared);
+        Optional<Homework> homework = Optional.ofNullable(getNearestHomeworkForLesson(id));
+        if (homework.isPresent()) {
+            Optional<HomeworkFile> homeworkFile = getFileForHomework(homework.get().getId());
+            Boolean isShared = isHomeworkShared(homework.get().getId());
+            return homeworkParser.toHomeworkResponseDto(homework.get(), homeworkFile, isShared);
+        }
+       return null;
     }
 }

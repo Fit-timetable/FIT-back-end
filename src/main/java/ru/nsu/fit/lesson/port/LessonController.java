@@ -1,5 +1,7 @@
 package ru.nsu.fit.lesson.port;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.nsu.fit.lesson.api.LessonForm;
@@ -22,7 +24,11 @@ public class LessonController {
 
     @GetMapping(ID_URL)
     public String getLesson(@PathVariable Long id){
-        lessonService.getLesson(id);
-        return "chucha";
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(lessonService.getLesson(id));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
