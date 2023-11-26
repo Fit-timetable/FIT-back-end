@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface GroupService {
     Group getGroupByStudentId(Long studentId);
-    List<GroupDto> getAllGroups();
+    List<GroupDto> getGroupsByStartGroupNumber(String number);
 }
