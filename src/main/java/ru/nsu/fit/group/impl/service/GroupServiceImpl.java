@@ -27,6 +27,7 @@ public class GroupServiceImpl implements GroupService {
         return groupStudent.getGroup();
     }
 
+    @Override
     public List<GroupDto> getGroupsByStartGroupNumber(String number) {
         Specification<Group> specification = GroupSpecifications.groupNumberStartsWith(number);
         return groupRepository.findAll(specification).stream()
