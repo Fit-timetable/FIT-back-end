@@ -1,10 +1,12 @@
 package ru.nsu.fit.group.impl.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.nsu.fit.group.api.GroupDto;
 import ru.nsu.fit.group.api.GroupService;
 import ru.nsu.fit.group.impl.data.GroupRepository;
+import ru.nsu.fit.group.impl.data.specification.GroupSpecifications;
 import ru.nsu.fit.group.impl.data.GroupStudentRepository;
 import ru.nsu.fit.group.impl.domain.model.Group;
 import ru.nsu.fit.group.impl.domain.service.DomainGroupService;
@@ -26,10 +28,10 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupDto> getAllGroups() {
-        return groupRepository.findAll().stream()
+    public List<GroupDto> getGroupsByStartGroupNumber(String number) {
+        Specification<Group> specification = GroupSpecifications.groupNumberStartsWith(number);
+        return groupRepository.findAll(specification).stream()
                 .map(domainGroupService::toGroupDto)
                 .toList();
     }
-
 }
