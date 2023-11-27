@@ -8,6 +8,8 @@ import ru.nsu.fit.student.impl.data.StudentRepository;
 import ru.nsu.fit.student.impl.domain.model.Student;
 import ru.nsu.fit.student.impl.domain.model.StudentLesson;
 
+import java.util.Optional;
+
 @AllArgsConstructor
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -17,6 +19,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudent(Long id) {
         return studentRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Optional<Student> getByEmail(String email) {
+        return studentRepository.findStudentByEmail(email);
     }
 
     @Override

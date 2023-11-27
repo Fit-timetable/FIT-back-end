@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: FIT-Timetable API
-  version: 0.0.5
+  version: 0.0.6
 paths:
   /schedule/group/{group}:
     get:
@@ -419,7 +419,7 @@ paths:
   /request-signup:
     post:
       tags:
-        - auth
+        - signup
       summary: Запрос на отправку кода подтверждения
       requestBody:
         required: true
@@ -440,7 +440,7 @@ paths:
   /confirm-signup:
     post:
       tags:
-        - auth
+        - signup
       summary: Подтверждение регистрации
       requestBody:
         description: Код подтверждения, отправленный на почту
@@ -469,6 +469,79 @@ paths:
           description: Неверный формат запроса или некорректные данные
         '401':
           description: Неправильный код подтверждения
+  /jwt/tokens:
+    get:
+      tags:
+        - auth
+      summary: Получение refresh и access токенов
+      parameters:
+        - name: Authorization
+          in: header
+          description: 'почта:{noop}пароль в формате base64'
+          schema:
+            type: string
+            example: 'Basic YWRtaW46e25vb3B9YWRtaW4='
+      responses:
+        '200':
+          description: 'refresh и access токены'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  accessTokenExpiry:
+                    type: string
+                    format: date
+                    example: '2023-11-27T10:22:51.084353Z'
+                  refreshToken:
+                    type: string
+                  refreshTokenExpiry:
+                    type: string
+                    format: date
+                    example: '2023-11-28T10:17:51.084297Z'
+  /jwt/refresh:
+    post:
+      tags:
+        - auth
+      summary: Получение нового access токена
+      parameters:
+        - name: Authorization
+          in: header
+          description: Refresh токен
+          schema:
+            type: string
+            example: Bearer eyJraWQiOiJkM2YwZWE
+      responses:
+        '200':
+          description: 'access токен'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  accessTokenExpiry:
+                    type: string
+                    format: date
+                    example: '2023-11-27T10:22:51.084353Z'
+  /jwt/logout:
+    post:
+      tags:
+        - auth
+      summary: Сделать refresh токен невалидным
+      parameters:
+        - name: Authorization
+          in: header
+          description: Refresh токен
+          schema:
+            type: string
+            example: Bearer eyJraWQiOiJkM2YwZWE
+      responses:
+        '204':
+          description: 'токен сделан невалидным'
   /group:
     get:
       parameters:
