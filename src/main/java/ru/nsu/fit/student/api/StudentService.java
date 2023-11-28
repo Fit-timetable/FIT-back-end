@@ -7,4 +7,6 @@ public interface StudentService {
     Student getStudent(Long id);
 
     void saveStudentLesson(StudentLesson studentLesson);
+
+    void saveStudent(String email, String password);
 }

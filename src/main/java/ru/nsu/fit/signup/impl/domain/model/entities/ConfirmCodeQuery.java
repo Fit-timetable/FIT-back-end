@@ -1,4 +1,4 @@
-package ru.nsu.fit.email.impl.domain.model.entities;
+package ru.nsu.fit.signup.impl.domain.model.entities;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;

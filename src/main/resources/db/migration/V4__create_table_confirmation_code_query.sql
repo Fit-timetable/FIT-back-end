@@ -1,7 +1,7 @@
 CREATE TABLE confirmation_code_query (
     id              BIGSERIAL PRIMARY KEY,
-    email           VARCHAR NOT NULL,
-    code            VARCHAR NOT NULL,
+    email           VARCHAR NOT NULL UNIQUE,
+    code            VARCHAR(6) NOT NULL,
     expiration_date TIMESTAMP NOT NULL
 );
 
