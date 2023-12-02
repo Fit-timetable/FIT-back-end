@@ -2,7 +2,6 @@ package ru.nsu.fit.email.port;
 
 import static ru.nsu.fit.email.port.EmailUrl.REQUEST_SIGNUP;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -30,4 +30,9 @@ public class StudentServiceImpl implements StudentService {
     public void saveStudentLesson(StudentLesson studentLesson) {
         studentLessonRepository.save(studentLesson);    
     }
+
+    @Override
+    public void saveStudent(String email, String password) {
+        studentRepository.save(new Student(email, password));    
+    }
 }

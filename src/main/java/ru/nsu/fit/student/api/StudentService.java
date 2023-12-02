@@ -11,4 +11,6 @@ public interface StudentService {
     Optional<Student> getByEmail(String email);
 
     void saveStudentLesson(StudentLesson studentLesson);
+
+    void saveStudent(String email, String password);
 }
