@@ -6,16 +6,16 @@ import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
-import ru.nsu.fit.signup.api.ConfirmSignupService;
+import ru.nsu.fit.signup.api.SignupService;
 import ru.nsu.fit.signup.api.dto.ConfirmSignupDTO;
 import ru.nsu.fit.signup.impl.data.ConfirmCodeQueryRepository;
 import ru.nsu.fit.signup.impl.domain.model.entities.ConfirmCodeQuery;
-import ru.nsu.fit.signup.impl.domain.service.DomaintConfirmCode;
+import ru.nsu.fit.signup.impl.domain.service.SignupDomainService;
 import ru.nsu.fit.student.api.StudentService;
 
 @Service
 @AllArgsConstructor
-public class ConfirmSignupServiceImpl implements ConfirmSignupService {
+public class SignupServiceImpl implements SignupService {
     private final StudentService studentService;
     private final ConfirmCodeQueryRepository confirmCodeQueryRepository;
 
@@ -39,6 +39,6 @@ public class ConfirmSignupServiceImpl implements ConfirmSignupService {
 
     @Override
     public void pushConfirmCodeToQuery(String email, String code, LocalDateTime expirationDate) {
-        confirmCodeQueryRepository.save(DomaintConfirmCode.createConfirmCodeQuery(email, code, expirationDate));
+        confirmCodeQueryRepository.save(SignupDomainService.createConfirmCodeQuery(email, code, expirationDate));
     }  
 }

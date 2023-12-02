@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import ru.nsu.fit.signup.api.dto.ConfirmSignupDTO;
 
-public interface ConfirmSignupService {
+public interface SignupService {
     void createStudent(ConfirmSignupDTO confirmSignupDTO);
 
     void pushConfirmCodeToQuery(String email, String code, LocalDateTime expirationDate);

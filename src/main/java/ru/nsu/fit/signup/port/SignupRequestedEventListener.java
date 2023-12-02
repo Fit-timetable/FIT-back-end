@@ -5,14 +5,14 @@ import java.time.LocalDateTime;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import ru.nsu.fit.signup.api.ConfirmSignupService;
+import ru.nsu.fit.signup.api.SignupService;
 import ru.nsu.fit.signup.api.SignupRequestedEvent;
 
 @Component
 public class SignupRequestedEventListener implements ApplicationListener<SignupRequestedEvent> {
-    private final ConfirmSignupService confirmSignupService;
+    private final SignupService confirmSignupService;
 
-    public SignupRequestedEventListener(ConfirmSignupService confirmSignupService) {
+    public SignupRequestedEventListener(SignupService confirmSignupService) {
         this.confirmSignupService = confirmSignupService;
     }
 
