@@ -12,6 +12,7 @@ import ru.nsu.fit.resource.impl.domain.model.Resource;
 import ru.nsu.fit.resource.impl.domain.service.ResourceDomainService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -51,6 +52,11 @@ public class ResourceServiceImpl implements ResouceService {
     @Override
     public List<ResourceResponseDto> getResourcesDtoBySubjectId(Long id) {
         List<Resource> resources = getResourcesBySubjectId(id);
+
+        if(resources == null){
+            throw new NoSuchElementException("Resources doesn't exist");
+        }
+
         List<String> resourcesMaterial = getResourcesMaterial(resources);
         
         return resourceParser.toResourceResponseDtoList(resources, resourcesMaterial);

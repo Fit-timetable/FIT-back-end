@@ -15,6 +15,7 @@ import ru.nsu.fit.homework.impl.domain.service.HomeworkDomainService;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -50,6 +51,11 @@ public class HomeworkServiceImpl implements HomeworkService{
     @Override
     public HomeworkResponseDto getNearestHomeworkResponseDtoByLessonId(Long id){
         Homework homework = getNearestHomeworkForLesson(id);
+
+        if(homework == null){
+            throw new NoSuchElementException("Lesson doesn't exist");
+        }
+
         HomeworkFile homeworkFile = getFileForHomework(homework.getId());
         Boolean isShared = isHomeworkShared(homework.getId());
 

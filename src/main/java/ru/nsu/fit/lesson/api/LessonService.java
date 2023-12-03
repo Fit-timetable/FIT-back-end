@@ -8,7 +8,7 @@ import java.util.Date;
 
 public interface LessonService {
     Lesson createLesson(LessonForm lessonForm);
-
+    
     void cancelLesson(Long id, Date date);
 
     void editLesson(Long id, EditLessonDto editLessonDto);

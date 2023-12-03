@@ -2,7 +2,6 @@ package ru.nsu.fit.homework.impl.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Type;
 
 import java.time.ZonedDateTime;
 import java.time.Duration;
@@ -32,6 +31,13 @@ public class Homework {
     @Column(name = "estimated_time", nullable = false)
     private Duration estimatedTime;
 
+    @Column(name = "homework_text", nullable = false)
+    private String homeworkText;
+
+    @Column(name = "notification_period")
+    private Duration notificationPeriod;
+
+
     public Long getStudentId(){
         return studentId;
     }
@@ -50,5 +56,13 @@ public class Homework {
 
     public Duration getEstimatedTime(){
         return estimatedTime;
+    }
+
+    public String getHomeworkText() {
+        return homeworkText;
+    }
+
+    public Duration getNotificationPeriod() {
+        return notificationPeriod;
     }
 }

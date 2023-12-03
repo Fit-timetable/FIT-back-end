@@ -25,6 +25,7 @@ import ru.nsu.fit.subject.impl.domain.model.Subject;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -91,6 +92,11 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public LessonDetailsDto getLessonDetails(Long id) {
         Lesson lesson = lessonRepository.getReferenceById(id);
+
+        if(lesson == null){
+            throw new NoSuchElementException("Lesson doesn't exist");
+        }
+
         HomeworkResponseDto homeworkResponseDto = homeworkService.getNearestHomeworkResponseDtoByLessonId(id);
         List<ResourceResponseDto> resources = resourceService.getResourcesDtoBySubjectId(lesson.getSubject().getId());
         

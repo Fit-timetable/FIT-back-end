@@ -2,18 +2,16 @@ package ru.nsu.fit.resource.impl.domain.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "resource")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class Resource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
