@@ -20,7 +20,6 @@ public class ResourceServiceImpl implements ResouceService {
     private ResourceRepository resourceRepository;
     private ResourceDriveMaterialRepository resourceDriveMaterialRepository;
     private ResourceLinkMaterialRepository resourceLinkMaterialRepository;
-    private ResourceDomainService resourceParser;
 
     private List<Resource> getResourcesBySubjectId(Long id) {
         return resourceRepository.findAllBySubjectId(id);
@@ -58,7 +57,13 @@ public class ResourceServiceImpl implements ResouceService {
         }
 
         List<String> resourcesMaterial = getResourcesMaterial(resources);
+
+        List<ResourceResponseDto> resourceResponseDto = new ArrayList<>();
+
+        for(int i = 0; i < resources.size(); i += 1){
+            resourceResponseDto.add(ResourceDomainService.toResourceResponseDtoList(resources.get(i), resourcesMaterial.get(i)));
+        }
         
-        return resourceParser.toResourceResponseDtoList(resources, resourcesMaterial);
+        return resourceResponseDto;
     }
 }
