@@ -10,6 +10,7 @@ import ru.nsu.fit.group.impl.data.specification.GroupSpecifications;
 import ru.nsu.fit.group.impl.data.GroupStudentRepository;
 import ru.nsu.fit.group.impl.domain.model.Group;
 import ru.nsu.fit.group.impl.domain.service.DomainGroupService;
+import ru.nsu.fit.group.impl.domain.service.GroupParser;
 
 import java.util.List;
 
@@ -29,9 +30,6 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupDto> getGroupsByStartGroupNumber(String number) {
-        Specification<Group> specification = GroupSpecifications.groupNumberStartsWith(number);
-        return groupRepository.findAll(specification).stream()
-                .map(domainGroupService::toGroupDto)
-                .toList();
+        return GroupParser.parse(number);
     }
 }
