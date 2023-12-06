@@ -53,12 +53,17 @@ public class HomeworkServiceImpl implements HomeworkService{
         Homework homework = getNearestHomeworkForLesson(id);
 
         if(homework == null){
-            throw new NoSuchElementException("Lesson doesn't exist");
+            throw new NoSuchElementException("Homework doesn't exist");
         }
 
         HomeworkFile homeworkFile = getFileForHomework(homework.getId());
         Boolean isShared = isHomeworkShared(homework.getId());
 
         return homeworkDomainService.toHomeworkResponseDto(homework, homeworkFile, isShared);
+    }
+
+    @Override
+    public void saveHomework(Homework homework){
+        homeworkRepository.save(homework);
     }
 }
