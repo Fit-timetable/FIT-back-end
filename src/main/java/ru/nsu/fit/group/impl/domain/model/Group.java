@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "\"group\"")
 @Data
@@ -16,4 +18,8 @@ public class Group {
     private Long id;
     @Column(nullable = false, unique = true)
     private String number;
+
+    public Group(String number) {
+        this.number = number;
+    }
 }

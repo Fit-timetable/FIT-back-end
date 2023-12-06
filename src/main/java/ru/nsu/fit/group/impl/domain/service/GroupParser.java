@@ -42,4 +42,15 @@ public class GroupParser {
 
         return groupDtos;
     }
+
+    public static boolean getGroupFromSiteByNumber(String number) {
+        try {
+            Document document = Jsoup.connect(GroupUrl.NSU_GROUP_LIST_URL).get();
+            Elements groupElements = document.select("a.group");
+            return groupElements.stream().anyMatch(element -> element.text().equals(number));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

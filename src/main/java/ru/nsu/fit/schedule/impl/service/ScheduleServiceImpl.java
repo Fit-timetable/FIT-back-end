@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nsu.fit.group.impl.data.GroupRepository;
 import ru.nsu.fit.group.impl.domain.model.Group;
+import ru.nsu.fit.group.impl.domain.service.GroupParser;
 import ru.nsu.fit.schedule.api.ScheduleService;
 import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
 import ru.nsu.fit.schedule.impl.data.PinnedScheduleRepository;
@@ -16,6 +17,7 @@ import ru.nsu.fit.student.impl.domain.model.Student;
 import ru.nsu.fit.student.impl.domain.model.StudentLesson;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -50,7 +52,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void pinSchedule(Long studentId, String groupNumber) {
-        Group group = groupRepository.findByNumber(groupNumber).orElseThrow();
+        Group group = groupRepository.findByNumber(groupNumber).orElseGet(() -> {
+            if (GroupParser.getGroupFromSiteByNumber(groupNumber)) {
+                return groupRepository.save(new Group(groupNumber));
+            }
+            throw new NoSuchElementException("Group not found");
+        });
+
         Student student = studentRepository.findById(studentId).orElseThrow();
 
         PinnedSchedule pinnedSchedule = domainScheduleService.createPinnedSchedule(group, student);
