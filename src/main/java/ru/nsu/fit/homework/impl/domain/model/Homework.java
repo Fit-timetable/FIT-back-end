@@ -40,6 +40,17 @@ public class Homework {
     @Type(value = Interval.class)
     private Duration notificationPeriod;
 
+    public Homework(Long studentId, Long lessonId, ZonedDateTime deadline, Short daysBeforeDeadlineReminder,
+    Duration estimatedTime, String homeworkText, Duration notificationPeriod){
+        this.studentId = studentId;
+        this.lessonId = lessonId;
+        this.deadline = deadline;
+        this.daysBeforeDeadlineReminder = daysBeforeDeadlineReminder;
+        this.estimatedTime = estimatedTime;
+        this.homeworkText = homeworkText;
+        this.notificationPeriod = notificationPeriod;
+    }
+
     public Long getStudentId(){
         return studentId;
     }

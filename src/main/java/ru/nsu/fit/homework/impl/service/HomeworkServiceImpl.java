@@ -14,6 +14,7 @@ import ru.nsu.fit.homework.impl.domain.service.HomeworkDomainService;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -63,7 +64,10 @@ public class HomeworkServiceImpl implements HomeworkService{
     }
 
     @Override
-    public void saveHomework(Homework homework){
-        homeworkRepository.save(homework);
+    public void saveHomework(Long studentId, Long lessonId, ZonedDateTime deadline, Short daysBeforeDeadlineReminder,
+                         Duration estimatedTime, String homeworkText, Duration notificationPeriod) {
+
+        homeworkRepository.save(new Homework(studentId, lessonId, deadline, daysBeforeDeadlineReminder,
+                                     estimatedTime, homeworkText, notificationPeriod));
     }
 }
