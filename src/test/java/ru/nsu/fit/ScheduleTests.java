@@ -24,7 +24,7 @@ public class ScheduleTests {
     @Sql("classpath:db/insert-default-schedule-pins.sql")
     public void Schedule_could_be_pinned() {
         // Arrange
-        var requestDto = new PinRequestDto(1L, "22201");
+        var requestDto = new PinRequestDto("22201");
 
         var groupWeekSchedule = webTestClient.method(HttpMethod.GET)
                 .uri(uriBuilder -> uriBuilder.path(ScheduleUrl.SCHEDULE_URL + ScheduleUrl.GROUP_URL)
@@ -45,10 +45,7 @@ public class ScheduleTests {
 
         // Assert
         webTestClient.method(HttpMethod.GET)
-                .uri(uriBuilder -> uriBuilder.path(ScheduleUrl.SCHEDULE_URL + ScheduleUrl.PIN_URL)
-                        .queryParam("student_id", requestDto.studentId())
-                        .build()
-                )
+                .uri(ScheduleUrl.SCHEDULE_URL + ScheduleUrl.PIN_URL)
                 .exchange()
                 .expectBody(WeekScheduleDto.class)
                 .isEqualTo(groupWeekSchedule);
