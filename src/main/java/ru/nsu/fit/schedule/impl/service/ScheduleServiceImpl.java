@@ -53,7 +53,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void pinSchedule(Long studentId, String groupNumber) {
         Group group = groupRepository.findByNumber(groupNumber).orElseGet(() -> {
-            if (GroupParser.getGroupFromSiteByNumber(groupNumber)) {
+            if (GroupParser.doesGroupExist(groupNumber)) {
                 return groupRepository.save(new Group(groupNumber));
             }
             throw new NoSuchElementException("Group not found");

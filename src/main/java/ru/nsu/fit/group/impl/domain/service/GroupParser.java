@@ -43,7 +43,7 @@ public class GroupParser {
         return groupDtos;
     }
 
-    public static boolean getGroupFromSiteByNumber(String number) {
+    public static boolean doesGroupExist(String number) {
         try {
             Document document = Jsoup.connect(GroupUrl.NSU_GROUP_LIST_URL).get();
             Elements groupElements = document.select("a.group");
