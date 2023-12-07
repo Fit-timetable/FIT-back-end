@@ -31,6 +31,7 @@ public class GroupParser {
                 if (groupNumber.startsWith(number)) {
                     groupDtos.add(new GroupDto(null, groupNumber));
                 }
+                counter++;
                 if (counter == scheduleElements.size() / 2) {
                     break;
                 }
