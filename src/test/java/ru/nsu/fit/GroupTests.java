@@ -31,6 +31,6 @@ public class GroupTests {
                 .getResponseBody();
         assert groups != null;
 
-        Assertions.assertEquals(groups.size(), 5);
+        Assertions.assertEquals(groups.size(), 20);
     }
 }

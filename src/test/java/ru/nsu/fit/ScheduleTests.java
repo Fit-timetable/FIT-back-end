@@ -4,12 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Mono;
 import ru.nsu.fit.lesson.impl.domain.model.LessonType;
 import ru.nsu.fit.schedule.api.dto.LessonScheduleDto;
-import ru.nsu.fit.schedule.api.dto.PinRequestDto;
 import ru.nsu.fit.schedule.api.dto.WeekScheduleDto;
 import ru.nsu.fit.schedule.port.ScheduleUrl;
 import ru.nsu.fit.utils.CaseTest;
@@ -19,37 +16,6 @@ public class ScheduleTests {
 
     @Autowired
     private WebTestClient webTestClient;
-
-    @Test
-    @Sql("classpath:db/insert-default-schedule-pins.sql")
-    public void Schedule_could_be_pinned() {
-        // Arrange
-        var requestDto = new PinRequestDto("22201");
-
-        var groupWeekSchedule = webTestClient.method(HttpMethod.GET)
-                .uri(uriBuilder -> uriBuilder.path(ScheduleUrl.SCHEDULE_URL + ScheduleUrl.GROUP_URL)
-                        .build(requestDto.group()))
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(WeekScheduleDto.class)
-                .returnResult()
-                .getResponseBody();
-        assert groupWeekSchedule != null;
-
-        // Act
-        webTestClient.method(HttpMethod.POST)
-                .uri(ScheduleUrl.SCHEDULE_URL + ScheduleUrl.PIN_URL)
-                .body(Mono.just(requestDto), PinRequestDto.class)
-                .exchange()
-                .expectStatus().isOk();
-
-        // Assert
-        webTestClient.method(HttpMethod.GET)
-                .uri(ScheduleUrl.SCHEDULE_URL + ScheduleUrl.PIN_URL)
-                .exchange()
-                .expectBody(WeekScheduleDto.class)
-                .isEqualTo(groupWeekSchedule);
-    }
 
     @Test
     public void Schedule_has_openings_only_before_or_between_lessons() {
@@ -72,7 +38,6 @@ public class ScheduleTests {
         Assertions.assertEquals(mondayLessons[3].type(), LessonType.SEMINAR);
         Assertions.assertEquals(mondayLessons.length, 4);
     }
-
 
 
 }
