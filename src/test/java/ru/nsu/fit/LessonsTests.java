@@ -76,6 +76,8 @@ public class LessonsTests {
 
     @Test
     @Sql("classpath:db/insert-default-students.sql")
+    @Sql("classpath:db/insert-default-subjects.sql")
+    @Sql("classpath:db/insert-default-groups.sql")
     @Sql("classpath:db/insert-default-lesson.sql")
     public void Lesson_could_be_changed_correctly() throws ParseException {
         Tokens tokens = getAuthentificateTokens();
@@ -102,6 +104,8 @@ public class LessonsTests {
 
     @Test
     @Sql("classpath:db/insert-default-students.sql")
+    @Sql("classpath:db/insert-default-subjects.sql")
+    @Sql("classpath:db/insert-default-groups.sql")
     @Sql("classpath:db/insert-default-lesson.sql")
     public void Lesson_could_be_deleted() {
         Tokens tokens = getAuthentificateTokens();
@@ -117,6 +121,8 @@ public class LessonsTests {
 
     @Test
     @Sql("classpath:db/insert-default-students.sql")
+    @Sql("classpath:db/insert-default-subjects.sql")
+    @Sql("classpath:db/insert-default-groups.sql")
     @Sql("classpath:db/insert-default-lesson.sql")
     public void Lesson_in_chosen_day_could_be_deleted() throws ParseException {
         Tokens tokens = getAuthentificateTokens();
