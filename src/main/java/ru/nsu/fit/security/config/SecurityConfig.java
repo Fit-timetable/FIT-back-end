@@ -23,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import ru.nsu.fit.email.port.EmailUrl;
 import ru.nsu.fit.security.impl.domain.service.RefreshTokenFilter;
 import ru.nsu.fit.security.impl.domain.service.RequestJwtTokensFilter;
 import ru.nsu.fit.security.impl.domain.service.tokendeserializer.AccessTokenJwsStringDeserializer;
@@ -30,6 +31,7 @@ import ru.nsu.fit.security.impl.domain.service.tokendeserializer.RefreshTokenJwe
 import ru.nsu.fit.security.impl.domain.service.tokenserializer.AccessTokenJwsStringSerializer;
 import ru.nsu.fit.security.impl.domain.service.tokenserializer.RefreshTokenJweStringSerializer;
 import ru.nsu.fit.security.impl.service.BlacklistedTokenService;
+import ru.nsu.fit.signup.port.SignupUrl;
 import ru.nsu.fit.student.api.StudentService;
 
 import java.text.ParseException;
@@ -72,9 +74,16 @@ public class SecurityConfig {
 
     @Bean
     @Profile("nosecurity")
-    public WebSecurityCustomizer webSecurityCustomizer() {
+    public WebSecurityCustomizer webNoSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers("/**");
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers(EmailUrl.REQUEST_SIGNUP)
+                .requestMatchers(SignupUrl.CONFIRM_SIGNUP);
     }
 
     @Bean
