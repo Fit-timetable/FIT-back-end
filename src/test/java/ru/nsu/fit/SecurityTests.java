@@ -2,16 +2,25 @@ package ru.nsu.fit;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
+import ru.nsu.fit.email.api.dto.EmailDTO;
+import ru.nsu.fit.email.impl.service.EmailService;
+import ru.nsu.fit.email.port.EmailUrl;
 import ru.nsu.fit.schedule.api.dto.PinRequestDto;
 import ru.nsu.fit.schedule.port.ScheduleUrl;
 import ru.nsu.fit.security.api.Tokens;
 import ru.nsu.fit.security.port.TokenUrl;
+import ru.nsu.fit.signup.api.dto.ConfirmSignupDTO;
+import ru.nsu.fit.signup.port.SignupUrl;
 import ru.nsu.fit.utils.CaseTestWithSecurityEnabled;
+
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doNothing;
 
 
 @CaseTestWithSecurityEnabled
@@ -20,6 +29,9 @@ public class SecurityTests {
 
     @Autowired
     private WebTestClient webTestClient;
+
+    @MockBean
+    private EmailService emailService;
 
     private final static String authUsername = "i.ivanov222@g.nsu.ru";
     private final static String authPassword = "12345678";
@@ -126,5 +138,34 @@ public class SecurityTests {
                 .expectStatus().isUnauthorized();
     }
 
-    // TODO: test if signup endpoints require authorization
+    @Test
+    @Sql("classpath:db/insert-default-confirmation_code_query.sql")
+    public void could_create_new_student_without_authorities() {
+        var requestDto = new ConfirmSignupDTO(
+                "absract_user@mail.ru",
+                "adminadmin",
+                123456
+        );
+
+        webTestClient.method(HttpMethod.POST)
+                .uri(SignupUrl.CONFIRM_SIGNUP)
+                .body(Mono.just(requestDto),ConfirmSignupDTO.class)
+                .exchange()
+                .expectStatus().isOk();
+    }
+
+    @Test
+    public void could_send_message_without_authorities() {
+        var requestDto = new EmailDTO(
+                "absract_user@mail.ru"
+        );
+
+        doNothing().when(emailService).sendMail(anyString(), anyString(), anyString());
+
+        webTestClient.method(HttpMethod.POST)
+                .uri(EmailUrl.REQUEST_SIGNUP)
+                .body(Mono.just(requestDto), EmailDTO.class)
+                .exchange()
+                .expectStatus().isOk();
+    }
 }
