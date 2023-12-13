@@ -6,13 +6,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+
+import ru.nsu.fit.homework.api.HomeworkService;
+import ru.nsu.fit.homework.api.dto.HomeworkResponseDto;
 import ru.nsu.fit.lesson.api.LessonForm;
 import ru.nsu.fit.lesson.api.LessonService;
 import ru.nsu.fit.lesson.api.dto.EditLessonDto;
+import ru.nsu.fit.lesson.api.dto.LessonDetailsDto;
 import ru.nsu.fit.lesson.impl.data.CanceledLessonRepository;
 import ru.nsu.fit.lesson.impl.data.LessonRepository;
 import ru.nsu.fit.lesson.impl.domain.model.entities.Lesson;
 import ru.nsu.fit.lesson.impl.domain.service.DomainLessonService;
+import ru.nsu.fit.resource.api.dto.ResourceResponseDto;
+import ru.nsu.fit.resource.api.ResouceService;
 import ru.nsu.fit.student.api.StudentService;
 import ru.nsu.fit.student.impl.data.StudentLessonRepository;
 import ru.nsu.fit.student.impl.domain.model.StudentLesson;
@@ -21,6 +27,7 @@ import ru.nsu.fit.subject.impl.domain.model.Subject;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -31,6 +38,8 @@ public class LessonServiceImpl implements LessonService {
     private final CanceledLessonRepository canceledLessonRepository;
     private final SubjectService subjectService;
     private final StudentService studentService;
+    private HomeworkService homeworkService;
+    private ResouceService resourceService;
 
     @Override
     public Lesson createLesson(LessonForm lessonForm) {
@@ -81,5 +90,19 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public void deleteLesson(Long id) {
         lessonRepository.deleteById(id);
+    }
+
+    @Override
+    public LessonDetailsDto getLessonDetails(Long id) {
+        Lesson lesson = lessonRepository.findById(id).orElse(null);
+
+        if(lesson == null){
+            throw new NoSuchElementException("Lesson doesn't exist");
+        }
+
+        HomeworkResponseDto homeworkResponseDto = homeworkService.getNearestHomeworkResponseDtoByLessonId(id);
+        List<ResourceResponseDto> resources = resourceService.getResourcesDtoBySubjectId(lesson.getSubject().getId());
+        
+        return DomainLessonService.toLessonDetailsDTO(lesson, homeworkResponseDto, resources);
     }
 }
