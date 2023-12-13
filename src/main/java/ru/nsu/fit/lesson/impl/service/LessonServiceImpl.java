@@ -2,7 +2,10 @@ package ru.nsu.fit.lesson.impl.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import ru.nsu.fit.homework.api.HomeworkService;
 import ru.nsu.fit.homework.api.dto.HomeworkResponseDto;
@@ -50,8 +53,10 @@ public class LessonServiceImpl implements LessonService {
                 lessonForm.parity(),
                 subject)
         );
+        var student = studentService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
 
-        studentService.saveStudentLesson(DomainLessonService.mapping(lesson, studentService.getStudent(lessonForm.studentId())));
+        studentService.saveStudentLesson(DomainLessonService.mapping(lesson, studentService.getStudent(student.getId())));
 
         return lesson;
     }

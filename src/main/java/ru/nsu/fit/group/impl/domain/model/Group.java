@@ -16,4 +16,8 @@ public class Group {
     private Long id;
     @Column(nullable = false, unique = true)
     private String number;
+
+    public Group(String number) {
+        this.number = number;
+    }
 }

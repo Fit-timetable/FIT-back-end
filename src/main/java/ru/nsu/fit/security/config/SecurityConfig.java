@@ -9,9 +9,11 @@ import com.nimbusds.jose.jwk.OctetSequenceKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import ru.nsu.fit.email.port.EmailUrl;
 import ru.nsu.fit.security.impl.domain.service.RefreshTokenFilter;
 import ru.nsu.fit.security.impl.domain.service.RequestJwtTokensFilter;
 import ru.nsu.fit.security.impl.domain.service.tokendeserializer.AccessTokenJwsStringDeserializer;
@@ -28,6 +31,7 @@ import ru.nsu.fit.security.impl.domain.service.tokendeserializer.RefreshTokenJwe
 import ru.nsu.fit.security.impl.domain.service.tokenserializer.AccessTokenJwsStringSerializer;
 import ru.nsu.fit.security.impl.domain.service.tokenserializer.RefreshTokenJweStringSerializer;
 import ru.nsu.fit.security.impl.service.BlacklistedTokenService;
+import ru.nsu.fit.signup.port.SignupUrl;
 import ru.nsu.fit.student.api.StudentService;
 
 import java.text.ParseException;
@@ -66,6 +70,20 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
+    }
+
+    @Bean
+    @Profile("nosecurity")
+    public WebSecurityCustomizer webNoSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers("/**");
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers(EmailUrl.REQUEST_SIGNUP)
+                .requestMatchers(SignupUrl.CONFIRM_SIGNUP);
     }
 
     @Bean
