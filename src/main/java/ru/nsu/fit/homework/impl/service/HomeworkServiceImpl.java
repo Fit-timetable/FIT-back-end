@@ -28,6 +28,11 @@ public class HomeworkServiceImpl implements HomeworkService{
 
     private Homework getNearestHomeworkForLesson(Long id) {
         List<Homework> homeworks = homeworkRepository.findAllByLessonId(id);
+        
+        if(homeworks.isEmpty()){
+            throw new NoSuchElementException("Homeworks doesn't exist");
+        }
+
         Instant now = Instant.now();
         Homework closestHomework = null;
         Duration minDuration = Duration.between(now, homeworks.get(0).getDeadline());
