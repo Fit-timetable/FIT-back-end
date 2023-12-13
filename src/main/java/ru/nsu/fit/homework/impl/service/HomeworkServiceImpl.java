@@ -46,7 +46,7 @@ public class HomeworkServiceImpl implements HomeworkService{
     }
 
     private Boolean isHomeworkShared(Long id) {
-        return groupHomeworkRepository.findByHomeworkId(id) != null;
+        return groupHomeworkRepository.findByHomeworkId(id).isPresent();
     }
 
     @Override

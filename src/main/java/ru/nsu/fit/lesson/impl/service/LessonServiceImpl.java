@@ -14,7 +14,6 @@ import ru.nsu.fit.lesson.impl.data.CanceledLessonRepository;
 import ru.nsu.fit.lesson.impl.data.LessonRepository;
 import ru.nsu.fit.lesson.impl.domain.model.entities.Lesson;
 import ru.nsu.fit.lesson.impl.domain.service.DomainLessonService;
-import ru.nsu.fit.lesson.impl.domain.service.LessonParser;
 import ru.nsu.fit.resource.api.dto.ResourceResponseDto;
 import ru.nsu.fit.resource.api.ResouceService;
 import ru.nsu.fit.student.api.StudentService;
@@ -38,7 +37,6 @@ public class LessonServiceImpl implements LessonService {
     private final StudentService studentService;
     private HomeworkService homeworkService;
     private ResouceService resourceService;
-    private LessonParser lessonParser;
 
     @Override
     public Lesson createLesson(LessonForm lessonForm) {
@@ -91,7 +89,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public LessonDetailsDto getLessonDetails(Long id) {
-        Lesson lesson = lessonRepository.getReferenceById(id);
+        Lesson lesson = lessonRepository.findById(id).orElse(null);
 
         if(lesson == null){
             throw new NoSuchElementException("Lesson doesn't exist");
@@ -100,6 +98,6 @@ public class LessonServiceImpl implements LessonService {
         HomeworkResponseDto homeworkResponseDto = homeworkService.getNearestHomeworkResponseDtoByLessonId(id);
         List<ResourceResponseDto> resources = resourceService.getResourcesDtoBySubjectId(lesson.getSubject().getId());
         
-        return lessonParser.toLessonDetailsDTO(lesson, homeworkResponseDto, resources);
+        return DomainLessonService.toLessonDetailsDTO(lesson, homeworkResponseDto, resources);
     }
 }

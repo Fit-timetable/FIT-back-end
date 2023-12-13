@@ -3,15 +3,17 @@ package ru.nsu.fit.homework.impl.domain.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Duration;
 import java.time.ZonedDateTime;
 
 import org.hibernate.annotations.Type;
+
+import java.time.Duration;
 
 @Entity
 @Table(name = "homework")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Homework {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +31,7 @@ public class Homework {
     @Column(name = "days_before_deadline_reminder")
     private Short daysBeforeDeadlineReminder;
 
-    @Column(name = "estimated_time", nullable = false, columnDefinition = "interval")
+    @Column(name = "estimated_time", nullable = false)
     @Type(value = Interval.class)
     private Duration estimatedTime;
 
@@ -71,11 +73,11 @@ public class Homework {
         return estimatedTime;
     }
 
-    public String getHomeworkText() {
+    public String getHomeworkText(){
         return homeworkText;
     }
 
-    public Duration getNotificationPeriod() {
+    public Duration getNotificationPeriod(){
         return notificationPeriod;
     }
 }
