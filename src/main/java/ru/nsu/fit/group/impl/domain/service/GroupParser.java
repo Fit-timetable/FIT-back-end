@@ -11,7 +11,9 @@ import ru.nsu.fit.group.api.GroupDto;
 import ru.nsu.fit.group.port.GroupUrl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Component
@@ -25,15 +27,12 @@ public class GroupParser {
             Document document = Jsoup.connect(GroupUrl.NSU_GROUP_LIST_URL).get();
             Elements scheduleElements = document.select("a.group");
 
-            int counter = 0;
+            Set<String> groupNumbers = new HashSet<>();
+
             for (Element scheduleElement : scheduleElements) {
                 String groupNumber = scheduleElement.text();
-                if (groupNumber.startsWith(number)) {
+                if (groupNumber.startsWith(number) && groupNumbers.add(groupNumber)) {
                     groupDtos.add(new GroupDto(null, groupNumber));
-                }
-                counter++;
-                if (counter == scheduleElements.size() / 2) {
-                    break;
                 }
             }
 
