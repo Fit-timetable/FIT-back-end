@@ -100,17 +100,23 @@ public class LessonServiceImpl implements LessonService {
             throw new NoSuchElementException("Lesson doesn't exist");
         }
 
-        HomeworkResponseDto homeworkResponseDto = null;
-        List<ResourceResponseDto> resources = null;
+        HomeworkResponseDto homeworkResponseDto;
+        List<ResourceResponseDto> resources;
 
         try{
             homeworkResponseDto = homeworkService.getNearestHomeworkResponseDtoByLessonId(id);
-            resourceService.getResourcesDtoBySubjectId(lesson.getSubject().getId());
         }
         catch(NoSuchElementException e){
-            return DomainLessonService.toLessonDetailsDTO(lesson, null, null);
+            homeworkResponseDto = null;
         }
-        
+
+        try{
+            resources = resourceService.getResourcesDtoBySubjectId(lesson.getSubject().getId());
+        }
+        catch(NoSuchElementException e){
+            resources = null;
+        }
+
         return DomainLessonService.toLessonDetailsDTO(lesson, homeworkResponseDto, resources);
     }
 }
