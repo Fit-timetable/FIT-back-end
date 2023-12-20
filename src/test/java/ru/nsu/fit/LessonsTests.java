@@ -1,5 +1,6 @@
 package ru.nsu.fit;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -10,6 +11,7 @@ import ru.nsu.fit.lesson.api.LessonDate;
 import ru.nsu.fit.lesson.api.LessonForm;
 import ru.nsu.fit.lesson.api.dto.CancelLessonDto;
 import ru.nsu.fit.lesson.api.dto.EditLessonDto;
+import ru.nsu.fit.lesson.api.dto.LessonDetailsDto;
 import ru.nsu.fit.lesson.api.dto.LessonIdDto;
 import ru.nsu.fit.lesson.impl.domain.model.LessonParity;
 import ru.nsu.fit.lesson.impl.domain.model.LessonPlace;
@@ -139,5 +141,32 @@ public class LessonsTests {
                 .body(Mono.just(requestDto), CancelLessonDto.class)
                 .exchange()
                 .expectStatus().isOk();
+    }
+
+    @Test
+    @Sql("classpath:db/insert-default-students.sql")
+    @Sql("classpath:db/insert-default-subjects.sql")
+    @Sql("classpath:db/insert-default-groups.sql")
+    @Sql("classpath:db/insert-default-lesson.sql")
+    public void Lesson_could_be_get() {
+        Tokens tokens = getAuthentificateTokens();
+
+        LessonDetailsDto lessonDetailsDto = webTestClient.method(HttpMethod.GET)
+            .uri(uriBuilder -> uriBuilder.path(LessonUrl.LESSON_URL + LessonUrl.ID_URL)
+                    .build(1L)) 
+            .headers(httpHeaders -> httpHeaders.setBearerAuth(tokens.accessToken()))
+            .exchange()
+            .expectBody(LessonDetailsDto.class)
+            .returnResult().getResponseBody();
+
+        
+        Assertions.assertNotNull(lessonDetailsDto);
+        Assertions.assertEquals("14:30", lessonDetailsDto.startTime());
+        Assertions.assertEquals("Programming", lessonDetailsDto.subject());
+        Assertions.assertEquals("Robert Johnson", lessonDetailsDto.teacher());
+        Assertions.assertEquals("Room 103", lessonDetailsDto.place().room());
+        Assertions.assertEquals("meetlink3", lessonDetailsDto.place().meetLink());
+        Assertions.assertNull(lessonDetailsDto.resource());
+        Assertions.assertNull(lessonDetailsDto.upcomingHomework());
     }
 }

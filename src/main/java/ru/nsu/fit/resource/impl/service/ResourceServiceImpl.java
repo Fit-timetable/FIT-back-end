@@ -52,7 +52,7 @@ public class ResourceServiceImpl implements ResouceService {
     public List<ResourceResponseDto> getResourcesDtoBySubjectId(Long id) {
         List<Resource> resources = getResourcesBySubjectId(id);
 
-        if(resources == null){
+        if(resources.isEmpty()){
             throw new NoSuchElementException("Resources doesn't exist");
         }
 
