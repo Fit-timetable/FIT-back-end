@@ -34,6 +34,7 @@ public class ScheduleTests {
         var mondayLessons = schedule.monday().lessons().toArray(new LessonScheduleDto[0]);
         Assertions.assertEquals(mondayLessons[0].type(), LessonType.OPENING);
         Assertions.assertEquals(mondayLessons[1].type(), LessonType.LECTURE);
+        Assertions.assertEquals(mondayLessons[1].subject(), "ДГМА");
         Assertions.assertEquals(mondayLessons[2].type(), LessonType.OPENING);
         Assertions.assertEquals(mondayLessons[3].type(), LessonType.SEMINAR);
         Assertions.assertEquals(mondayLessons.length, 4);

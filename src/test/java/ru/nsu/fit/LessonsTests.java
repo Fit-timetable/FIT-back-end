@@ -59,13 +59,12 @@ public class LessonsTests {
 
     @Test
     @Sql("classpath:db/insert-default-students.sql")
-    @Sql("classpath:db/insert-default-subjects.sql")
     public void Lesson_could_be_created() {
 
         Tokens tokens = getAuthentificateTokens();
 
         var requestDto = new LessonForm(
-                "Programming",
+                "Физкультура и спорт",
                 LessonType.PRACTICE,
                 new LessonDate(DayName.MONDAY, LocalDateTime.of(LocalDate.now(), LocalTime.parse("09:00"))),
                 new LessonPlace("3107", "meetLink"),
@@ -94,13 +93,12 @@ public class LessonsTests {
         Assertions.assertEquals(LessonParity.ALWAYS, lesson.getLessonParity());
         Assertions.assertEquals(LessonType.PRACTICE, lesson.getLessonType());
         Assertions.assertEquals(LocalDateTime.of(LocalDate.now(), LocalTime.parse("09:00")), lesson.getStartTime());
-        Assertions.assertEquals("Programming", lesson.getSubject().getName());
+        Assertions.assertEquals("Физкультура и спорт", lesson.getSubject().getName());
 
     }
 
     @Test
     @Sql("classpath:db/insert-default-students.sql")
-    @Sql("classpath:db/insert-default-subjects.sql")
     @Sql("classpath:db/insert-default-groups.sql")
     @Sql("classpath:db/insert-default-lesson.sql")
     public void Lesson_could_be_changed_correctly() throws ParseException {
@@ -111,7 +109,7 @@ public class LessonsTests {
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         var requestDto = new EditLessonDto(
-                "Programming",
+                "Физкультура и спорт",
                 new LessonDate(DayName.FRIDAY, LocalDateTime.of(localDate, LocalTime.parse("14:30"))),
                 "Petrov R. R.",
                  new LessonPlace("3107", "meetLink")
@@ -137,12 +135,11 @@ public class LessonsTests {
         Assertions.assertEquals(LessonParity.EVEN, lesson.getLessonParity());
         Assertions.assertEquals(LessonType.LECTURE, lesson.getLessonType());
         Assertions.assertEquals(LocalDateTime.of(localDate, LocalTime.parse("14:30")), lesson.getStartTime());
-        Assertions.assertEquals("Programming", lesson.getSubject().getName());
+        Assertions.assertEquals("Физкультура и спорт", lesson.getSubject().getName());
     }
 
     @Test
     @Sql("classpath:db/insert-default-students.sql")
-    @Sql("classpath:db/insert-default-subjects.sql")
     @Sql("classpath:db/insert-default-groups.sql")
     @Sql("classpath:db/insert-default-lesson.sql")
     public void Lesson_could_be_deleted() {
@@ -165,7 +162,6 @@ public class LessonsTests {
 
     @Test
     @Sql("classpath:db/insert-default-students.sql")
-    @Sql("classpath:db/insert-default-subjects.sql")
     @Sql("classpath:db/insert-default-groups.sql")
     @Sql("classpath:db/insert-default-lesson.sql")
     public void Lesson_in_chosen_day_could_be_deleted() throws ParseException {
@@ -187,7 +183,6 @@ public class LessonsTests {
 
     @Test
     @Sql("classpath:db/insert-default-students.sql")
-    @Sql("classpath:db/insert-default-subjects.sql")
     @Sql("classpath:db/insert-default-groups.sql")
     @Sql("classpath:db/insert-default-lesson.sql")
     public void Lesson_could_be_get() {
@@ -204,7 +199,7 @@ public class LessonsTests {
         
         Assertions.assertNotNull(lessonDetailsDto);
         Assertions.assertEquals("14:30", lessonDetailsDto.startTime());
-        Assertions.assertEquals("Programming", lessonDetailsDto.subject());
+        Assertions.assertEquals("Физкультура и спорт", lessonDetailsDto.subject());
         Assertions.assertEquals("Robert Johnson", lessonDetailsDto.teacher());
         Assertions.assertEquals("Room 103", lessonDetailsDto.place().room());
         Assertions.assertEquals("meetlink3", lessonDetailsDto.place().meetLink());
