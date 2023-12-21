@@ -16,4 +16,9 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public Subject getSubject(String name) {
+        return subjectRepository.findByName(name).orElse(null);
+    }
+
 }

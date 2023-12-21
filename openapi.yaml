@@ -207,8 +207,8 @@ paths:
               type: object
               properties:
                 subjectId:
-                  type: integer
-                  example: 1
+                  type: string
+                  example: 'КРПО'
                 date:
                   $ref: '#/components/schemas/LessonDate'
                 teacher:
@@ -962,8 +962,8 @@ components:
       type: object
       properties:
         subjectId:
-          type: integer
-          example: 1
+          type: string
+          example: 'КРПО'
         type:
           $ref: '#/components/schemas/LessonType'
         date:
