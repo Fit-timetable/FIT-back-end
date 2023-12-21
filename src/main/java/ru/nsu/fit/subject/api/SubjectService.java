@@ -4,4 +4,6 @@ import ru.nsu.fit.subject.impl.domain.model.Subject;
 
 public interface SubjectService{
     Subject getSubject(Long id);
+
+    Subject getSubject(String name);
 }
