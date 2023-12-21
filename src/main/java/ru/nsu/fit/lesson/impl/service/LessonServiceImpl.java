@@ -43,7 +43,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public Lesson createLesson(LessonForm lessonForm) {
-        Subject subject = subjectService.getSubject(lessonForm.subjectId());
+        Subject subject = subjectService.getSubject(lessonForm.subject());
         Lesson lesson = lessonRepository.save(DomainLessonService.mapping(
                 lessonForm.date().startTime(),
                 lessonForm.date().weekDay(),
@@ -73,7 +73,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public void editLesson(Long id, EditLessonDto editLessonDto) {
-        Subject subject = subjectService.getSubject(editLessonDto.subjectId());
+        Subject subject = subjectService.getSubject(editLessonDto.subject());
         Lesson existingLesson = lessonRepository.findById(id).orElseThrow();
 
         lessonRepository.save(DomainLessonService.mapping(

@@ -2,8 +2,6 @@ package ru.nsu.fit.subject.impl.data;
 
 import java.util.Optional;
 
-import javax.swing.text.html.Option;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.nsu.fit.subject.impl.domain.model.Subject;
